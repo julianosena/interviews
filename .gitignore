@@ -23,4 +23,8 @@
 hs_err_pid*
 replay_pid*
 
+# MacOS
 .DS_Store
+
+# Intellij Idea
+.idea
