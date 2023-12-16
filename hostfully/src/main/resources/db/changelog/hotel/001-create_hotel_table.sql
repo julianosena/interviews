@@ -1,0 +1,10 @@
+CREATE TABLE HOTEL (
+    hotel_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    address_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_H_ADDRESS
+        FOREIGN KEY (address_id)
+            REFERENCES ADDRESS(address_id)
+);
