@@ -1,7 +1,7 @@
 CREATE TABLE ROOM (
-    room_id INT PRIMARY KEY,
-    hotel_id INT NOT NULL,
-    room_type_id INT NOT NULL,
+    room_id VARCHAR(255) PRIMARY KEY,
+    hotel_id VARCHAR(255) NOT NULL,
+    room_type_id VARCHAR(255) NOT NULL,
     floor VARCHAR(50) NOT NULL,
     number VARCHAR(50) NOT NULL,
     max_occupancy INT NOT NULL,

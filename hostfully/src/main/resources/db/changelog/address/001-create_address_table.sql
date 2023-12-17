@@ -1,5 +1,5 @@
 CREATE TABLE ADDRESS (
-    address_id INT PRIMARY KEY,
+    address_id VARCHAR(255) PRIMARY KEY,
     street VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),

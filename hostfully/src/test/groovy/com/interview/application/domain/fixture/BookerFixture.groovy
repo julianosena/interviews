@@ -7,22 +7,26 @@ import java.time.LocalDateTime
 
 class BookerFixture {
 
-    static def create(def parameters = [
-            id : 1L,
-            firstName : "Fulano",
-            lastName : "Del Toro",
-            email : "fulano.toro@gmail.com",
-            createdAt : LocalDateTime.now(),
-            updatedAt : LocalDateTime.now()
-    ]) {
+    static def create(def parameters = [:]) {
+        def defaultValues = [
+                id : UUID.randomUUID(),
+                firstName : "Fulano",
+                lastName : "Del Toro",
+                email : "fulano.toro@gmail.com",
+                address : AddressFixture.create(),
+                createdAt : LocalDateTime.now(),
+                updatedAt : LocalDateTime.now()
+        ]
+        def values = defaultValues + parameters
+
         return Booker.builder()
-                .id(parameters.id as Long)
-                .firstName(parameters.firstName as String)
-                .lastName(parameters.lastName as String)
-                .email(parameters.email as String)
-                .address(parameters.address as Address)
-                .createdAt(parameters.createdAt as LocalDateTime)
-                .updatedAt(parameters.updatedAt as LocalDateTime)
+                .id(values.id as UUID)
+                .firstName(values.firstName as String)
+                .lastName(values.lastName as String)
+                .email(values.email as String)
+                .address(values.address as Address)
+                .createdAt(values.createdAt as LocalDateTime)
+                .updatedAt(values.updatedAt as LocalDateTime)
                 .build()
     }
 }

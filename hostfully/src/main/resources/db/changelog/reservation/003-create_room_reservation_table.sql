@@ -1,5 +1,5 @@
 CREATE TABLE ROOM_RESERVATION (
-    reservation_id INT NOT NULL,
+    reservation_id VARCHAR(255) NOT NULL,
     room_id INT NOT NULL,
     guest_name VARCHAR(200) NOT NULL,
     guest_email VARCHAR(200) NOT NULL,

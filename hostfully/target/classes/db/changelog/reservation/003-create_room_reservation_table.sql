@@ -1,11 +1,8 @@
 CREATE TABLE ROOM_RESERVATION (
-    reservation_id INT NOT NULL,
+    reservation_id VARCHAR(255) NOT NULL,
     room_id INT NOT NULL,
     guest_name VARCHAR(200) NOT NULL,
     guest_email VARCHAR(200) NOT NULL,
-    number_of_adults INT NOT NULL,
-    number_of_children INT NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (reservation_id, room_id),

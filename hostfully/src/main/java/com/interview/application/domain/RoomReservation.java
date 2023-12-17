@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode( of = { "id", "room" })
 public class RoomReservation {
 
-    private Long id;
+    private UUID id;
     private Room room;
     private String guestName;
     private String guestEmail;

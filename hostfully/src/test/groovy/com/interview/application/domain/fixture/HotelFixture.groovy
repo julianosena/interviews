@@ -6,17 +6,23 @@ import java.time.LocalDateTime
 
 class HotelFixture {
 
-    static def create(Map<String, String> parameters = [
-            id : 1L,
-            name : "Z Hotel of London",
-            createdAt : LocalDateTime.now(),
-            updatedAt : LocalDateTime.now()
-    ]) {
+    static def create(def parameters = [:]) {
+        def defaultValues = [
+                id : UUID.randomUUID(),
+                name : "Z Hotel of London",
+                rooms : [],
+                createdAt : LocalDateTime.now(),
+                updatedAt : LocalDateTime.now()
+        ]
+
+        def values = defaultValues + parameters
+
         return Hotel.builder()
-                .id(parameters.id as Long)
-                .name(parameters.name as String)
-                .createdAt(parameters.createdAt as LocalDateTime)
-                .updatedAt(parameters.updatedAt as LocalDateTime)
+                .id(values.id as UUID)
+                .name(values.name as String)
+                .rooms(values.rooms as List)
+                .createdAt(values.createdAt as LocalDateTime)
+                .updatedAt(values.updatedAt as LocalDateTime)
                 .build()
     }
 }

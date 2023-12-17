@@ -1,5 +1,5 @@
 CREATE TABLE ROOM_TYPE (
-    room_type_id INT PRIMARY KEY,
+    room_type_id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(200),
     description TEXT,
     rate_adult DECIMAL(10, 2) NOT NULL,

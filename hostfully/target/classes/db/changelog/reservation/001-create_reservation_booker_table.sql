@@ -1,5 +1,5 @@
 CREATE TABLE BOOKER (
-    booker_id INT PRIMARY KEY,
+    booker_id VARCHAR(255) PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email DECIMAL(10, 2) NOT NULL,

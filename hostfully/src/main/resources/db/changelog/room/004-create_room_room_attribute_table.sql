@@ -1,6 +1,6 @@
 CREATE TABLE ROOM_ROOM_ATTRIBUTE (
-    room_id INT NOT NULL,
-    room_attribute_id INT NOT NULL,
+    room_id VARCHAR(255) NOT NULL,
+    room_attribute_id VARCHAR(255) NOT NULL,
     CONSTRAINT FK_RRA_ROOM
         FOREIGN KEY (room_id)
             REFERENCES ROOM(room_id),

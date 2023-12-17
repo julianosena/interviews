@@ -1,5 +1,5 @@
 CREATE TABLE HOTEL (
-    hotel_id INT PRIMARY KEY,
+    hotel_id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     address_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

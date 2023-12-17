@@ -5,13 +5,22 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
 @EqualsAndHashCode( of = { "id" })
 public class RoomAttribute {
 
-    private Long id;
+    private UUID id;
     private String description;
 
+    @Override
+    public String toString() {
+        return "RoomAttribute{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

@@ -5,10 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,14 +15,30 @@ import java.util.Map;
 @EqualsAndHashCode( of = { "id" })
 public class Room {
 
-    private Long id;
+    private UUID id;
     private Hotel hotel;
     private RoomType type;
     private String floor;
     private String number;
     private Long maxOccupancy;
-    private Boolean isAvailable;
+    private Boolean available;
     private List<RoomAttribute> attributes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", hotel=" + hotel +
+                ", type=" + type +
+                ", floor='" + floor + '\'' +
+                ", number='" + number + '\'' +
+                ", maxOccupancy=" + maxOccupancy +
+                ", available=" + available +
+                ", attributes=" + attributes +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
