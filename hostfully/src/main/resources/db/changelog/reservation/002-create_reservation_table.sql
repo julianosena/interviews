@@ -1,7 +1,6 @@
 CREATE TABLE RESERVATION (
     reservation_id VARCHAR(255) PRIMARY KEY,
     booker_id INT NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL,
     check_in_date DATE NOT NULL,
     check_out_date DATE NOT NULL,
     number_of_adults INT NOT NULL,
