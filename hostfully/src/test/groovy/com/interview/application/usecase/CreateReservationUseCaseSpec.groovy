@@ -27,7 +27,7 @@ class CreateReservationUseCaseSpec extends Specification {
         and : "The booker would like to make a reservation"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
-        def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.getFirst()
+        def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
 
         and : "select the period It would like to stay there"
         def checkinDate = LocalDate.now()
@@ -84,7 +84,7 @@ class CreateReservationUseCaseSpec extends Specification {
         and : "The booker would like to make a reservation"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
-        def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.getFirst()
+        def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
 
         and : "select the period It would like to stay there"
         def checkinDate = LocalDate.now()

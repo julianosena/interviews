@@ -37,7 +37,7 @@ class RoomFixture {
                 .build()
     }
 
-    static def list(Hotel hotel, def parameters = [:]){
+    static List<Room> list(Hotel hotel, def parameters = [:]){
         Assert.that(null != hotel, "Hotel can't be null")
         Assert.that(null != hotel.id, "Hotel must be existent")
         def defaultValues = [

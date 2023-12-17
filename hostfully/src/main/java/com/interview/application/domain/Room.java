@@ -21,7 +21,7 @@ public class Room {
     private String floor;
     private String number;
     private Long maxOccupancy;
-    private Boolean available;
+    private boolean available;
     private List<RoomAttribute> attributes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
