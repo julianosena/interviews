@@ -38,6 +38,11 @@ public class IsThereAvailabilityForTheReservationUseCase {
         }
 
         List<Reservation> reservations = findReservationsByRoomIdsAndRangeUseCase.execute(ids, reservation.getCheckinDate(), reservation.getCheckoutDate());
+        if(null != reservation.getId() && reservations.size() == 1){
+            UUID reservedId = reservations.iterator().next().getId();
+            return reservedId.equals(reservation.getId());
+        }
+
         return CollectionUtils.isEmpty(reservations);
     }
 }
