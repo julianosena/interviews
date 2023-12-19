@@ -3,9 +3,8 @@ package com.interview.application.gateway.database.h2.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.id.uuid.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,10 +20,13 @@ import java.util.UUID;
 public class RoomBookingH2 {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", type = UuidGenerator.class)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "room_booking_id")
     private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "booking_id")
+    private BookingH2 booking;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

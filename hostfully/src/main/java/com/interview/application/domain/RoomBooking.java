@@ -15,6 +15,7 @@ import java.util.UUID;
 public class RoomBooking {
 
     private UUID id;
+    private Booking booking;
     private Room room;
     private String guestName;
     private String guestEmail;

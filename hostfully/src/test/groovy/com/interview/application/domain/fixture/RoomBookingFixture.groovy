@@ -1,5 +1,6 @@
 package com.interview.application.domain.fixture
 
+import com.interview.application.domain.Booking
 import com.interview.application.domain.Room
 import com.interview.application.domain.RoomBooking
 
@@ -19,6 +20,7 @@ class RoomBookingFixture {
 
         return RoomBooking.builder()
             .id(values.id as UUID)
+            .booking(values.booking as Booking)
             .room(values.room as Room)
             .guestName(values.guestName as String)
             .guestEmail(values.guestEmail as String)

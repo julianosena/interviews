@@ -20,8 +20,8 @@ import java.util.UUID;
 public class AddressH2 {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", type = UuidGenerator.class)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "address_id")
     private UUID id;
 
     @Column(name = "street")

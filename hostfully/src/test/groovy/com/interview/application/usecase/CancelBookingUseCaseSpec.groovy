@@ -3,19 +3,14 @@ package com.interview.application.usecase
 import com.interview.application.domain.Booking
 import com.interview.application.domain.Hotel
 import com.interview.application.domain.exception.BusinessException
-import com.interview.application.domain.fixture.BookerFixture
-import com.interview.application.domain.fixture.HotelFixture
-import com.interview.application.domain.fixture.RoomBookingFixture
-import com.interview.application.domain.fixture.RoomFixture
+import com.interview.application.domain.fixture.*
 import com.interview.application.gateway.SaveBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
 import java.time.LocalDate
 
-import static com.interview.application.domain.Booking.Status.CANCELED
-import static com.interview.application.domain.Booking.Status.PENDING
-import static com.interview.application.domain.fixture.BookingFixture.create
+import static com.interview.application.domain.Booking.Status.*
 
 class CancelBookingUseCaseSpec extends Specification {
 
@@ -40,8 +35,7 @@ class CancelBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, the created booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
-        def booking = create([
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
@@ -49,8 +43,14 @@ class CancelBookingUseCaseSpec extends Specification {
                 numberOfAdults: 2,
                 numberOfChildren: 1,
                 status : PENDING,
-                roomBookings: [roomBooking]
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         when : "use case is called"
         Booking canceled = useCase.execute(booking.id)
@@ -134,17 +134,22 @@ class CancelBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, the created booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
-        def booking = create([
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                status : CANCELED,
-                roomBookings: [roomBooking]
+                status : REFUNDED,
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         when : "use case is called"
         useCase.execute(booking.id)

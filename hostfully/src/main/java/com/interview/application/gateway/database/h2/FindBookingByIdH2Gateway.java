@@ -2,7 +2,7 @@ package com.interview.application.gateway.database.h2;
 
 import com.interview.application.domain.Booking;
 import com.interview.application.gateway.FindBookingByIdGateway;
-import com.interview.application.gateway.database.h2.model.BookingH2Mapper;
+import com.interview.application.gateway.database.h2.model.mapper.BookingH2Mapper;
 import com.interview.application.gateway.database.h2.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;

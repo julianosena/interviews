@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 import static com.interview.application.domain.Booking.Status.PAID
 import static com.interview.application.domain.Booking.Status.PENDING
-import static com.interview.application.domain.fixture.BookingFixture.create
+
 
 class UpdateBookingUseCaseSpec extends Specification {
 
@@ -39,16 +39,22 @@ class UpdateBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, the created booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
-        def booking = create([
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomBookings: [roomBooking]
+                status : PENDING,
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         and : "the booker would like to update the checkin, checkout dates and the guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([
@@ -78,7 +84,7 @@ class UpdateBookingUseCaseSpec extends Specification {
 
         and : "the process of creation booking should be executed with success"
         1 * saveBookingGateway.execute(booking) >> {
-            create([
+            BookingFixture.create([
                     id : booking.id,
                     booker : booker,
                     checkinDate: updatableBookProperties.checkinDate,
@@ -137,16 +143,22 @@ class UpdateBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, the created booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
-        def booking = create([
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomBookings: [roomBooking]
+                status : PENDING,
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         and : "the booker would like to update only the checkin and checkout dates"
         UpdatableBookingProperties updatableBookProperties = UpdatableBookingPropertiesFixture.create([
@@ -171,7 +183,7 @@ class UpdateBookingUseCaseSpec extends Specification {
 
         and : "the process of creation booking should be executed with success"
         1 * saveBookingGateway.execute(booking) >> {
-            create([
+            BookingFixture.create([
                     id : booking.id,
                     booker : booker,
                     checkinDate: updatableBookProperties.checkinDate,
@@ -225,16 +237,22 @@ class UpdateBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, the created booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
-        def booking = create([
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomBookings: [roomBooking]
+                status : PENDING,
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         and : "the booker would like to update only the guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([
@@ -264,7 +282,7 @@ class UpdateBookingUseCaseSpec extends Specification {
 
         and : "the process of creation booking should be executed with success"
         1 * saveBookingGateway.execute(booking) >> {
-            create([
+            BookingFixture.create([
                     id : booking.id,
                     booker : booker,
                     checkinDate: booking.checkinDate,
@@ -373,8 +391,7 @@ class UpdateBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, the created booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
-        def booking = create([
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
@@ -382,8 +399,14 @@ class UpdateBookingUseCaseSpec extends Specification {
                 numberOfAdults: 2,
                 numberOfChildren: 1,
                 status : PAID,
-                roomBookings: [roomBooking]
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         and : "the booker would like to update only guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([
@@ -433,8 +456,7 @@ class UpdateBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, the created booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
-        def booking = create([
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
@@ -442,8 +464,14 @@ class UpdateBookingUseCaseSpec extends Specification {
                 numberOfAdults: 2,
                 numberOfChildren: 1,
                 status : PENDING,
-                roomBookings: [roomBooking]
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         and : "the booker would like to update the checkin, checkout dates and the guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([

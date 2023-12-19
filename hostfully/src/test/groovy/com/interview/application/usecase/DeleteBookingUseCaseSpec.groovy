@@ -1,11 +1,10 @@
 package com.interview.application.usecase
 
 import com.interview.application.domain.Booking
+import com.interview.application.domain.fixture.BookingFixture
 import com.interview.application.gateway.DeleteBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
-
-import static com.interview.application.domain.fixture.BookingFixture.create
 
 class DeleteBookingUseCaseSpec extends Specification {
 
@@ -15,7 +14,7 @@ class DeleteBookingUseCaseSpec extends Specification {
 
     def "It should delete a booking with success"(){
         given: "valid and existent booking"
-        def booking = create([ id : UUID.randomUUID() ])
+        def booking = BookingFixture.create([id: UUID.randomUUID() ])
 
         when : "use case is called"
         useCase.execute(booking.id)

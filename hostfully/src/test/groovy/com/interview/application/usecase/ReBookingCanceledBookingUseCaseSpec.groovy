@@ -10,6 +10,7 @@ import java.time.LocalDate
 
 import static com.interview.application.domain.Booking.Status.*
 
+
 class ReBookingCanceledBookingUseCaseSpec extends Specification {
 
     def findBookingByIdUseCase = Mock(FindBookingByIdUseCase)
@@ -146,8 +147,7 @@ class ReBookingCanceledBookingUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "existent canceled booking"
-        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
+        and : "existent refunded booking"
         def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
@@ -156,8 +156,14 @@ class ReBookingCanceledBookingUseCaseSpec extends Specification {
                 numberOfAdults: 2,
                 numberOfChildren: 1,
                 status : REFUNDED,
-                roomBookings: [roomBooking]
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : UUID.randomUUID(),
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         when : "use case is called"
         useCase.execute(booking.id)

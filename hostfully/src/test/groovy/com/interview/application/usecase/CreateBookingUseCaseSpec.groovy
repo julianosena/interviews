@@ -11,6 +11,7 @@ import java.time.LocalDate
 
 import static com.interview.application.domain.Booking.Status.PENDING
 
+
 class CreateBookingUseCaseSpec extends Specification {
 
     def isThereAvailabilityForTheBookingUseCase = Mock(IsThereAvailabilityForTheBookingUseCase)
@@ -34,7 +35,6 @@ class CreateBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, It submits a booking"
-        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
         def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
@@ -42,8 +42,15 @@ class CreateBookingUseCaseSpec extends Specification {
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomBookings: [roomBooking]
+                status : PENDING,
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : null,
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         when : "use case is called"
         Booking reserved = useCase.execute(booking)
@@ -91,7 +98,6 @@ class CreateBookingUseCaseSpec extends Specification {
         def checkoutDate = checkinDate.plusMonths(1)
 
         and : "than, It submits a booking"
-        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
         def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
@@ -99,8 +105,15 @@ class CreateBookingUseCaseSpec extends Specification {
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomBookings: [roomBooking]
+                status : PENDING,
+                roomBookings: []
         ])
+        def roomBooking = RoomBookingFixture.create(
+                id : null,
+                room : selectedRoom,
+                booking : booking
+        )
+        booking.roomBookings.add(roomBooking)
 
         when : "use case is called"
         useCase.execute(booking)
