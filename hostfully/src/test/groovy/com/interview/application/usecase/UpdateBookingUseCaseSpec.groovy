@@ -322,7 +322,7 @@ class UpdateBookingUseCaseSpec extends Specification {
         and : "checking availability process should not be called"
         0 * isThereAvailabilityForTheBookingUseCase.execute(_ as Booking)
 
-        and : "the process of creation booking should be called"
+        and : "the process of creation booking should not be called"
         0 * saveBookingGateway.execute(_ as Booking)
 
         and : "throw an exception telling the id of the booking must be informed"
@@ -348,7 +348,7 @@ class UpdateBookingUseCaseSpec extends Specification {
         and : "checking availability process should not be called"
         0 * isThereAvailabilityForTheBookingUseCase.execute(_ as Booking)
 
-        and : "the process of creation booking should be called"
+        and : "the process of creation booking should not be called"
         0 * saveBookingGateway.execute(_ as Booking)
 
         and : "throw an exception telling there is no booking with given id"
@@ -408,7 +408,7 @@ class UpdateBookingUseCaseSpec extends Specification {
         and : "checking availability process should not be called"
         0 * isThereAvailabilityForTheBookingUseCase.execute(_ as Booking)
 
-        and : "the process of creation booking should be called"
+        and : "the process of creation booking should not be called"
         0 * saveBookingGateway.execute(_ as Booking)
 
         and : "throw an exception telling that is not allowed to update booking in different statuses of PENDING"
@@ -470,7 +470,7 @@ class UpdateBookingUseCaseSpec extends Specification {
             false
         }
 
-        and : "the process of creation booking should be called"
+        and : "the process of creation booking should not be called"
         0 * saveBookingGateway.execute(booking)
 
         and : "throw an exception telling there is no availability for the new range of the booking"

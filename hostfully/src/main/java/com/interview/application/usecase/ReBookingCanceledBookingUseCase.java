@@ -28,7 +28,7 @@ public class ReBookingCanceledBookingUseCase {
         final Booking booking = this.findBookingByIdUseCase.execute(id)
                 .orElseThrow(() -> new UseCaseException("You can not re-book a non existent canceled booking"));
 
-        if(booking.getStatus() != CANCELED) throw new UseCaseException("You can not re book a non-canceled booking");
+        if(booking.getStatus() != CANCELED) throw new UseCaseException("You can not re-book a non-canceled booking");
 
         Booking reCreatedBooking = Mappers.getMapper(ReCreateBookingMapper.class).map(booking);
         reCreatedBooking.setRoomBookings(new ArrayList<>());

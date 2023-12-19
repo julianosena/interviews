@@ -52,7 +52,7 @@ class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
         }
 
         and : "finding blocks by room ids and range process, should not return any block"
-        1 * findBlocksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], _ as Range) >> {
+        1 * findBlocksByRoomIdsAndRangeUseCase.execute(_ as Range) >> {
             []
         }
 
@@ -102,7 +102,7 @@ class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
         }
 
         and : "finding blocks by room ids and range process, should not be called"
-        0 * findBlocksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], _ as Range)
+        0 * findBlocksByRoomIdsAndRangeUseCase.execute(_ as Range)
 
         and : "finding bookings by room ids process, should not be called"
         0 * findBooksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], booking.checkinDate, booking.checkoutDate)
@@ -151,7 +151,7 @@ class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
         }
 
         and : "finding blocks by room ids and range process, should return list with one block"
-        1 * findBlocksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], _ as Range) >> {
+        1 * findBlocksByRoomIdsAndRangeUseCase.execute(_ as Range) >> {
             [block]
         }
 
@@ -199,7 +199,7 @@ class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
         }
 
         and : "finding blocks by room ids and range process, should return empty list"
-        1 * findBlocksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], _ as Range) >> {
+        1 * findBlocksByRoomIdsAndRangeUseCase.execute(_ as Range) >> {
             []
         }
 
@@ -257,7 +257,7 @@ class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
         }
 
         and : "finding blocks by room ids and range process, should return empty list"
-        1 * findBlocksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], _ as Range) >> {
+        1 * findBlocksByRoomIdsAndRangeUseCase.execute(_ as Range) >> {
             []
         }
 
@@ -307,7 +307,7 @@ class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
         }
 
         and : "finding blocks by room ids and range process, should return empty list"
-        1 * findBlocksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], _ as Range) >> {
+        1 * findBlocksByRoomIdsAndRangeUseCase.execute(_ as Range) >> {
             []
         }
 

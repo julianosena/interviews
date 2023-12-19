@@ -7,13 +7,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class FindBlocksByRoomIdsAndRangeUseCase {
 
-    public List<Block> execute(List<UUID> ids, Range range){
+    public List<Block> execute(Range range){
         return Collections.emptyList();
     }
 

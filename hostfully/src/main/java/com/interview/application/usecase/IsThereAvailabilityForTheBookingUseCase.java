@@ -13,7 +13,7 @@ import java.util.UUID;
 public class IsThereAvailabilityForTheBookingUseCase {
 
     private final FindBookingsByRoomIdsAndRangeUseCase findBookingsByRoomIdsAndRangeUseCase;
-    private final FindBlocksByRoomIdsAndRangeUseCase findBlocksByRoomIdsAndRangeUseCase;
+    private final FindBlocksByRoomIdsAndRangeUseCase findBlocksByRangeUseCase;
     private final FindRoomsByIdsUseCase findRoomsByIdsUseCase;
 
     public boolean execute(final Booking booking) {
@@ -32,12 +32,17 @@ public class IsThereAvailabilityForTheBookingUseCase {
                 .end(booking.getCheckoutDate())
                 .build();
 
-        List<Block> blocks = findBlocksByRoomIdsAndRangeUseCase.execute(ids, range);
+        List<Block> blocks = findBlocksByRangeUseCase.execute(range);
         if(!CollectionUtils.isEmpty(blocks)){
             return false;
         }
 
-        List<Booking> bookings = findBookingsByRoomIdsAndRangeUseCase.execute(ids, booking.getCheckinDate(), booking.getCheckoutDate());
+        List<Booking> bookings = findBookingsByRoomIdsAndRangeUseCase.execute(ids, booking.getCheckinDate(), booking.getCheckoutDate())
+                .stream()
+                .filter(item -> !item.getStatus().equals(Booking.Status.CANCELED))
+                .filter(item -> !item.getStatus().equals(Booking.Status.REFUNDED))
+                .toList();
+
         if(null != booking.getId() && bookings.size() == 1){
             UUID reservedId = bookings.iterator().next().getId();
             return reservedId.equals(booking.getId());

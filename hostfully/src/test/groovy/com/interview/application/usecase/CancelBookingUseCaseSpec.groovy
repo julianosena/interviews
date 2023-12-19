@@ -95,7 +95,7 @@ class CancelBookingUseCaseSpec extends Specification {
         e.message == "You must inform the id to cancel the booking"
     }
 
-    def "It should throw an exception telling is not allowed to cancel a non existent booking"(){
+    def "It should throw an exception telling you can not cancel a non existent booking"(){
         given: "No existent booking id"
         def id = UUID.randomUUID()
 
@@ -110,7 +110,7 @@ class CancelBookingUseCaseSpec extends Specification {
         and : "the process of cancellation booking should not be called"
         0 * saveBookingGateway.execute(_ as Booking)
 
-        then : "should throw an exception telling is not allow to cancel non pending or paid booking"
+        then : "should throw an exception telling you can not cancel a non existent booking"
         def e = thrown(UseCaseException)
 
         and : "message of the exception should be the expected"

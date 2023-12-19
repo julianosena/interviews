@@ -2,14 +2,13 @@ package com.interview.application.usecase
 
 import com.interview.application.domain.Booking
 import com.interview.application.domain.Hotel
-import com.interview.application.domain.UpdatableBookingProperties
 import com.interview.application.domain.fixture.*
+import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
 import java.time.LocalDate
 
-import static com.interview.application.domain.Booking.Status.CANCELED
-import static com.interview.application.domain.Booking.Status.PENDING
+import static com.interview.application.domain.Booking.Status.*
 
 class ReBookingCanceledBookingUseCaseSpec extends Specification {
 
@@ -103,11 +102,76 @@ class ReBookingCanceledBookingUseCaseSpec extends Specification {
         then : "find booking by id process should not be called"
         0 * findBookingByIdUseCase.execute(id)
 
-        and : "create booking process should be called"
+        and : "create booking process should not be called"
         0 * createBookingUseCase.execute(_ as Booking)
 
         and : "throw an exception telling the id of the booking must be informed"
         def e = thrown(IllegalArgumentException)
         e.message == "You must inform the id for re-booking process"
+    }
+
+    def "It should throw an exception because there is no booking with given id"(){
+        given : "a non-existent booking id"
+        def id = UUID.randomUUID()
+
+        when : "use case is called"
+        useCase.execute(id)
+
+        then : "find booking by id process should return an existent one"
+        1 * findBookingByIdUseCase.execute(id) >> {
+            Optional.empty()
+        }
+
+        and : "create booking process should not be called"
+        0 * createBookingUseCase.execute(_ as Booking)
+
+        and : "throw an exception telling there is no booking with given id"
+        def e = thrown(UseCaseException)
+        e.message == "You can not re-book a non existent canceled booking"
+    }
+
+    def "It should throw an exception because It is not allow do re-book a non-canceled booking"(){
+        given: "Valid and existent hotel"
+        Hotel hotel = HotelFixture.create()
+        and : "its rooms."
+        def rooms = RoomFixture.list(hotel)
+        hotel.rooms = rooms
+
+        and : "The booker would like to make a booking"
+        def booker = BookerFixture.create(id : UUID.randomUUID())
+        and : "than, It selects a room from hotel"
+        def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
+
+        and : "select the period It would like to stay there"
+        def checkinDate = LocalDate.now()
+        def checkoutDate = checkinDate.plusMonths(1)
+
+        and : "existent canceled booking"
+        def roomBooking = RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)
+        def booking = BookingFixture.create([
+                id : UUID.randomUUID(),
+                booker : booker,
+                checkinDate: checkinDate,
+                checkoutDate: checkoutDate,
+                numberOfAdults: 2,
+                numberOfChildren: 1,
+                status : REFUNDED,
+                roomBookings: [roomBooking]
+        ])
+
+        when : "use case is called"
+        useCase.execute(booking.id)
+
+        then : "find booking by id process should return an existent one"
+        1 * findBookingByIdUseCase.execute(booking.id) >> {
+            Optional.of(booking)
+        }
+
+        and : "create booking process should not be called"
+        0 * createBookingUseCase.execute(_ as Booking)
+
+        and : "throw an exception telling It is not allow do re-book a non-canceled booking"
+        def e = thrown(UseCaseException)
+        e.message == "You can not re-book a non-canceled booking"
     }
 }
