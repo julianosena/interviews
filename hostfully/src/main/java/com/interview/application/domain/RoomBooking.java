@@ -1,6 +1,7 @@
 package com.interview.application.domain;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,16 +11,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Booker {
+@EqualsAndHashCode( of = { "id" })
+public class RoomBooking {
 
     private UUID id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private Address address;
+    private Room room;
+    private String guestName;
+    private String guestEmail;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-
 
 }

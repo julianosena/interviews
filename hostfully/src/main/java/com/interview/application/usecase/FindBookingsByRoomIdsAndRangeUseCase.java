@@ -1,6 +1,6 @@
 package com.interview.application.usecase;
 
-import com.interview.application.domain.Reservation;
+import com.interview.application.domain.Booking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +11,9 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class FindReservationsByRoomIdsAndRangeUseCase {
+public class FindBookingsByRoomIdsAndRangeUseCase {
 
-    public List<Reservation> execute(List<UUID> ids, LocalDate checkinDate, LocalDate checkoutDate){
+    public List<Booking> execute(List<UUID> ids, LocalDate checkinDate, LocalDate checkoutDate){
         return Collections.emptyList();
     }
 

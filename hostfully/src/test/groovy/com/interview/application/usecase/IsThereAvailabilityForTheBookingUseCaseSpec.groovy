@@ -8,21 +8,21 @@ import spock.lang.Specification
 import java.time.LocalDate
 import java.util.function.Predicate
 
-class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
+class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
 
-    private FindReservationsByRoomIdsAndRangeUseCase findReservationsByRoomIdsAndRangeUseCase = Mock(FindReservationsByRoomIdsAndRangeUseCase)
+    private FindBookingsByRoomIdsAndRangeUseCase findBooksByRoomIdsAndRangeUseCase = Mock(FindBookingsByRoomIdsAndRangeUseCase)
     private FindBlocksByRoomIdsAndRangeUseCase findBlocksByRoomIdsAndRangeUseCase = Mock(FindBlocksByRoomIdsAndRangeUseCase)
     private FindRoomsByIdsUseCase findRoomsByIdsUseCase = Mock(FindRoomsByIdsUseCase)
-    def useCase = new IsThereAvailabilityForTheReservationUseCase(findReservationsByRoomIdsAndRangeUseCase, findBlocksByRoomIdsAndRangeUseCase, findRoomsByIdsUseCase)
+    def useCase = new IsThereAvailabilityForTheBookingUseCase(findBooksByRoomIdsAndRangeUseCase, findBlocksByRoomIdsAndRangeUseCase, findRoomsByIdsUseCase)
 
-    def "It should return true, because, there is availability for the requested reservation"(){
+    def "It should return true, because, there is availability for the requested booking"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -31,22 +31,22 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         when : "use case is called"
-        boolean isThereAvailability = useCase.execute(reservation)
+        boolean isThereAvailability = useCase.execute(booking)
 
-        then : "finding available rooms by room ids process, should return all of rooms within reservation"
+        then : "finding available rooms by room ids process, should return all of rooms within booking"
         1 * findRoomsByIdsUseCase.execute([selectedRoom.id], _ as Predicate) >> {
             [selectedRoom]
         }
@@ -56,12 +56,12 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
             []
         }
 
-        and : "finding reservations by room ids process, should not return any reservation within the given period"
-        1 * findReservationsByRoomIdsAndRangeUseCase.execute([selectedRoom.id], reservation.checkinDate, reservation.checkoutDate) >> {
+        and : "finding bookings by room ids process, should not return any booking within the given period"
+        1 * findBooksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], booking.checkinDate, booking.checkoutDate) >> {
             []
         }
 
-        and : "there is availability to make the given reservation"
+        and : "there is availability to make the given booking"
         isThereAvailability
     }
 
@@ -72,7 +72,7 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -81,22 +81,22 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         when : "use case is called"
-        boolean isThereAvailability = useCase.execute(reservation)
+        boolean isThereAvailability = useCase.execute(booking)
 
-        then : "finding available rooms by room ids process, should return all of rooms within reservation"
+        then : "finding available rooms by room ids process, should return all of rooms within booking"
         1 * findRoomsByIdsUseCase.execute([selectedRoom.id], _ as Predicate) >> {
             []
         }
@@ -104,10 +104,10 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         and : "finding blocks by room ids and range process, should not be called"
         0 * findBlocksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], _ as Range)
 
-        and : "finding reservations by room ids process, should not be called"
-        0 * findReservationsByRoomIdsAndRangeUseCase.execute([selectedRoom.id], reservation.checkinDate, reservation.checkoutDate)
+        and : "finding bookings by room ids process, should not be called"
+        0 * findBooksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], booking.checkinDate, booking.checkoutDate)
 
-        and : "there is no availability to make the given reservation"
+        and : "there is no availability to make the given booking"
         !isThereAvailability
     }
 
@@ -118,7 +118,7 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -127,25 +127,25 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         and : "a valid created block register"
         def block = BlockFixture.create()
 
         when : "use case is called"
-        boolean isThereAvailability = useCase.execute(reservation)
+        boolean isThereAvailability = useCase.execute(booking)
 
-        then : "finding available rooms by room ids process, should return all of rooms within reservation"
+        then : "finding available rooms by room ids process, should return all of rooms within booking"
         1 * findRoomsByIdsUseCase.execute([selectedRoom.id], _ as Predicate) >> {
             [selectedRoom]
         }
@@ -155,21 +155,21 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
             [block]
         }
 
-        and : "finding reservations by room ids process, should not be called"
-        0 * findReservationsByRoomIdsAndRangeUseCase.execute([selectedRoom.id], reservation.checkinDate, reservation.checkoutDate)
+        and : "finding bookings by room ids process, should not be called"
+        0 * findBooksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], booking.checkinDate, booking.checkoutDate)
 
-        and : "there is no availability to make the given reservation"
+        and : "there is no availability to make the given booking"
         !isThereAvailability
     }
 
-    def "It should return false, because, there is one reservation in the given range that is different of the given one"(){
+    def "It should return false, because, there is one booking in the given range that is different of the given one"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -178,22 +178,22 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         when : "use case is called"
-        boolean isThereAvailability = useCase.execute(reservation)
+        boolean isThereAvailability = useCase.execute(booking)
 
-        then : "finding available rooms by room ids process, should return all of rooms within reservation"
+        then : "finding available rooms by room ids process, should return all of rooms within booking"
         1 * findRoomsByIdsUseCase.execute([selectedRoom.id], _ as Predicate) >> {
             [selectedRoom]
         }
@@ -203,31 +203,31 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
             []
         }
 
-        and : "finding reservations by room ids process, should return one different reservation within a list"
-        1 * findReservationsByRoomIdsAndRangeUseCase.execute([selectedRoom.id], reservation.checkinDate, reservation.checkoutDate) >> {
-            [ReservationFixture.create([
+        and : "finding bookings by room ids process, should return one different booking within a list"
+        1 * findBooksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], booking.checkinDate, booking.checkoutDate) >> {
+            [BookingFixture.create([
                     id : UUID.randomUUID(),
                     booker : booker,
                     checkinDate: checkinDate,
                     checkoutDate: checkoutDate,
                     numberOfAdults: 2,
                     numberOfChildren: 1,
-                    roomReservations: [roomReservation]
+                    roomBookings: [roomBooking]
             ])]
         }
 
-        and : "there is no availability to make the given reservation"
+        and : "there is no availability to make the given booking"
         !isThereAvailability
     }
 
-    def "It should return true, because, there is only one reservation that is the same of the given one, within the given range of dates"(){
+    def "It should return true, because, there is only one booking that is the same of the given one, within the given range of dates"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -236,22 +236,22 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : UUID.randomUUID(),
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         when : "use case is called"
-        boolean isThereAvailability = useCase.execute(reservation)
+        boolean isThereAvailability = useCase.execute(booking)
 
-        then : "finding available rooms by room ids process, should return all of rooms within reservation"
+        then : "finding available rooms by room ids process, should return all of rooms within booking"
         1 * findRoomsByIdsUseCase.execute([selectedRoom.id], _ as Predicate) >> {
             [selectedRoom]
         }
@@ -261,23 +261,23 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
             []
         }
 
-        and : "finding reservations by room ids process, should return the same given reservation within a list"
-        1 * findReservationsByRoomIdsAndRangeUseCase.execute([selectedRoom.id], reservation.checkinDate, reservation.checkoutDate) >> {
-            [reservation]
+        and : "finding bookings by room ids process, should return the same given booking within a list"
+        1 * findBooksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], booking.checkinDate, booking.checkoutDate) >> {
+            [booking]
         }
 
-        and : "there is availability to make the given reservation"
+        and : "there is availability to make the given booking"
         isThereAvailability
     }
 
-    def "It should return false, because, there is more than one reservation, within the given range of dates"(){
+    def "It should return false, because, there is more than one booking, within the given range of dates"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -286,22 +286,22 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         when : "use case is called"
-        boolean isThereAvailability = useCase.execute(reservation)
+        boolean isThereAvailability = useCase.execute(booking)
 
-        then : "finding available rooms by room ids process, should return all of rooms within reservation"
+        then : "finding available rooms by room ids process, should return all of rooms within booking"
         1 * findRoomsByIdsUseCase.execute([selectedRoom.id], _ as Predicate) >> {
             [selectedRoom]
         }
@@ -311,12 +311,12 @@ class IsThereAvailabilityForTheReservationUseCaseSpec extends Specification {
             []
         }
 
-        and : "finding reservations by room ids process, should return more than one reservation within a list for the given range"
-        1 * findReservationsByRoomIdsAndRangeUseCase.execute([selectedRoom.id], reservation.checkinDate, reservation.checkoutDate) >> {
-            [ReservationFixture.create(), ReservationFixture.create()]
+        and : "finding bookings by room ids process, should return more than one booking within a list for the given range"
+        1 * findBooksByRoomIdsAndRangeUseCase.execute([selectedRoom.id], booking.checkinDate, booking.checkoutDate) >> {
+            [BookingFixture.create(), BookingFixture.create()]
         }
 
-        and : "there is no availability to make the given reservation"
+        and : "there is no availability to make the given booking"
         !isThereAvailability
     }
 }

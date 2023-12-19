@@ -10,17 +10,17 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class IsThereAvailabilityForTheReservationUseCase {
+public class IsThereAvailabilityForTheBookingUseCase {
 
-    private final FindReservationsByRoomIdsAndRangeUseCase findReservationsByRoomIdsAndRangeUseCase;
+    private final FindBookingsByRoomIdsAndRangeUseCase findBookingsByRoomIdsAndRangeUseCase;
     private final FindBlocksByRoomIdsAndRangeUseCase findBlocksByRoomIdsAndRangeUseCase;
     private final FindRoomsByIdsUseCase findRoomsByIdsUseCase;
 
-    public boolean execute(final Reservation reservation) {
+    public boolean execute(final Booking booking) {
 
-        List<UUID> ids = reservation.getRoomReservations()
+        List<UUID> ids = booking.getRoomBookings()
                 .stream()
-                .map(RoomReservation::getRoom)
+                .map(RoomBooking::getRoom)
                 .map(Room::getId)
                 .toList();
 
@@ -28,8 +28,8 @@ public class IsThereAvailabilityForTheReservationUseCase {
         if(ids.size() != rooms.size()) return false;
 
         Range range = Range.builder()
-                .start(reservation.getCheckinDate())
-                .end(reservation.getCheckoutDate())
+                .start(booking.getCheckinDate())
+                .end(booking.getCheckoutDate())
                 .build();
 
         List<Block> blocks = findBlocksByRoomIdsAndRangeUseCase.execute(ids, range);
@@ -37,12 +37,12 @@ public class IsThereAvailabilityForTheReservationUseCase {
             return false;
         }
 
-        List<Reservation> reservations = findReservationsByRoomIdsAndRangeUseCase.execute(ids, reservation.getCheckinDate(), reservation.getCheckoutDate());
-        if(null != reservation.getId() && reservations.size() == 1){
-            UUID reservedId = reservations.iterator().next().getId();
-            return reservedId.equals(reservation.getId());
+        List<Booking> bookings = findBookingsByRoomIdsAndRangeUseCase.execute(ids, booking.getCheckinDate(), booking.getCheckoutDate());
+        if(null != booking.getId() && bookings.size() == 1){
+            UUID reservedId = bookings.iterator().next().getId();
+            return reservedId.equals(booking.getId());
         }
 
-        return CollectionUtils.isEmpty(reservations);
+        return CollectionUtils.isEmpty(bookings);
     }
 }

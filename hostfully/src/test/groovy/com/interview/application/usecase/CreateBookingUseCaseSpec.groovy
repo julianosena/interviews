@@ -1,30 +1,30 @@
 package com.interview.application.usecase
 
+import com.interview.application.domain.Booking
 import com.interview.application.domain.Hotel
-import com.interview.application.domain.Reservation
 import com.interview.application.domain.fixture.*
-import com.interview.application.gateway.CreateReservationGateway
+import com.interview.application.gateway.SaveBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
 import java.time.LocalDate
 
-import static com.interview.application.domain.Reservation.Status.PENDING;
+import static com.interview.application.domain.Booking.Status.PENDING
 
-class CreateReservationUseCaseSpec extends Specification {
+class CreateBookingUseCaseSpec extends Specification {
 
-    def isThereAvailabilityForTheReservationUseCase = Mock(IsThereAvailabilityForTheReservationUseCase)
-    def createReservationGateway = Mock(CreateReservationGateway)
-    def useCase = new CreateReservationUseCase(isThereAvailabilityForTheReservationUseCase, createReservationGateway)
+    def isThereAvailabilityForTheBookingUseCase = Mock(IsThereAvailabilityForTheBookingUseCase)
+    def saveBookingGateway = Mock(SaveBookingGateway)
+    def useCase = new CreateBookingUseCase(isThereAvailabilityForTheBookingUseCase, saveBookingGateway)
 
-    def "It should create reservation for a room in a Hotel with success"(){
+    def "It should create booking for a room in a Hotel with success"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -33,45 +33,45 @@ class CreateReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         when : "use case is called"
-        Reservation reserved = useCase.execute(reservation)
+        Booking reserved = useCase.execute(booking)
 
-        then : "checking availability process should return that there is availability for this reservation"
-        1 * isThereAvailabilityForTheReservationUseCase.execute(reservation) >> {
+        then : "checking availability process should return that there is availability for this booking"
+        1 * isThereAvailabilityForTheBookingUseCase.execute(booking) >> {
             true
         }
 
-        and : "the process of creation reservation should be executed with success"
-        1 * createReservationGateway.execute(reservation) >> {
-            ReservationFixture.create([
+        and : "the process of creation booking should be executed with success"
+        1 * saveBookingGateway.execute(booking) >> {
+            BookingFixture.create([
                     id : UUID.randomUUID(),
                     booker : BookerFixture.create(id : UUID.randomUUID()),
                     checkinDate: checkinDate,
                     checkoutDate: checkoutDate,
                     numberOfAdults: 2,
                     numberOfChildren: 1,
-                    roomReservations: [RoomReservationFixture.create(id : UUID.randomUUID(), room : selectedRoom)]
+                    roomBookings: [RoomBookingFixture.create(id : UUID.randomUUID(), room : selectedRoom)]
             ])
         }
 
-        and : "Reservation should be returned"
+        and : "Booking should be returned"
         null != reserved
         and : "It must carry id within"
         null != reserved.id
-        and : "its status must be as expected"
-        reservation.status == PENDING
+        and : "its status must be the expected"
+        booking.status == PENDING
     }
 
     def "It should throw an exception because there is no availability for the room in a specific date"(){
@@ -81,7 +81,7 @@ class CreateReservationUseCaseSpec extends Specification {
         def rooms = RoomFixture.list(hotel)
         hotel.rooms = rooms
 
-        and : "The booker would like to make a reservation"
+        and : "The booker would like to make a booking"
         def booker = BookerFixture.create(id : null)
         and : "than, It selects a room from hotel"
         def selectedRoom = rooms.findAll { room -> room.type.name == "Standard" }.iterator().next()
@@ -90,28 +90,28 @@ class CreateReservationUseCaseSpec extends Specification {
         def checkinDate = LocalDate.now()
         def checkoutDate = checkinDate.plusMonths(1)
 
-        and : "than, It submits a reservation"
-        def roomReservation = RoomReservationFixture.create(id : null, room : selectedRoom)
-        def reservation = ReservationFixture.create([
+        and : "than, It submits a booking"
+        def roomBooking = RoomBookingFixture.create(id : null, room : selectedRoom)
+        def booking = BookingFixture.create([
                 id : null,
                 booker : booker,
                 checkinDate: checkinDate,
                 checkoutDate: checkoutDate,
                 numberOfAdults: 2,
                 numberOfChildren: 1,
-                roomReservations: [roomReservation]
+                roomBookings: [roomBooking]
         ])
 
         when : "use case is called"
-        useCase.execute(reservation)
+        useCase.execute(booking)
 
-        then : "checking availability process should return that there is availability for this reservation"
-        1 * isThereAvailabilityForTheReservationUseCase.execute(reservation) >> {
+        then : "checking availability process should return that there is availability for this booking"
+        1 * isThereAvailabilityForTheBookingUseCase.execute(booking) >> {
             false
         }
 
-        and : "the process of creation reservation should not be executed"
-        0 * createReservationGateway.execute(reservation)
+        and : "the process of creation booking should not be executed"
+        0 * saveBookingGateway.execute(booking)
 
         and : "the use case should throw an expcetion"
         def e = thrown(UseCaseException)
@@ -119,7 +119,7 @@ class CreateReservationUseCaseSpec extends Specification {
         null != e
         and : "its message should be the expected"
         e.message == "There is no availability for this period and " +
-                "room(s) " + reservation.getRoomReservations() + " " +
-                reservation.getCheckinDate() + " up to " + reservation.getCheckoutDate()
+                "room(s) " + booking.getRoomBookings() + " " +
+                booking.getCheckinDate() + " up to " + booking.getCheckoutDate()
     }
 }

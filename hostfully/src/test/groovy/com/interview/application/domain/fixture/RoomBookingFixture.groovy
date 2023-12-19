@@ -1,11 +1,11 @@
 package com.interview.application.domain.fixture
 
 import com.interview.application.domain.Room
-import com.interview.application.domain.RoomReservation
+import com.interview.application.domain.RoomBooking
 
 import java.time.LocalDateTime
 
-class RoomReservationFixture {
+class RoomBookingFixture {
 
     static def create(def parameters = [:]){
         def defaultValues = [
@@ -17,11 +17,11 @@ class RoomReservationFixture {
         ]
         def values = defaultValues + parameters
 
-        return RoomReservation.builder()
+        return RoomBooking.builder()
             .id(values.id as UUID)
             .room(values.room as Room)
-            .guestName(values.name as String)
-            .guestEmail(values.email as String)
+            .guestName(values.guestName as String)
+            .guestEmail(values.guestEmail as String)
             .createdAt(values.createdAt as LocalDateTime)
             .updatedAt(values.updatedAt as LocalDateTime)
             .build()

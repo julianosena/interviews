@@ -15,12 +15,4 @@ public class RoomAttribute {
 
     private UUID id;
     private String description;
-
-    @Override
-    public String toString() {
-        return "RoomAttribute{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

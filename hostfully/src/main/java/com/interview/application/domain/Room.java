@@ -25,20 +25,4 @@ public class Room {
     private List<RoomAttribute> attributes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", hotel=" + hotel +
-                ", type=" + type +
-                ", floor='" + floor + '\'' +
-                ", number='" + number + '\'' +
-                ", maxOccupancy=" + maxOccupancy +
-                ", available=" + available +
-                ", attributes=" + attributes +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }
