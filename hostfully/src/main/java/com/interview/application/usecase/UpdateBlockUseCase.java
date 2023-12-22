@@ -21,7 +21,7 @@ public class UpdateBlockUseCase {
             return saveBlockGateway.execute(block);
         }
 
-        throw new UseCaseException("There is availability to update the block for the given period");
+        throw new UseCaseException("There is no availability to update the block for the given period");
     }
 
 }

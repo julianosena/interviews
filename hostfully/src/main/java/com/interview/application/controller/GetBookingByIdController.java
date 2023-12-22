@@ -22,6 +22,6 @@ public class GetBookingByIdController {
     @ResponseStatus(HttpStatus.OK)
     public BookingApiModel execute(@PathVariable("id") UUID id){
         return useCase.execute(id).map(mapper::map)
-                .orElseThrow(() -> new NotFoundRestApiResourceException("There is no booking with the given id"));
+                .orElseThrow(() -> new NotFoundRestApiResourceException("There is no booking for the given id"));
     }
 }

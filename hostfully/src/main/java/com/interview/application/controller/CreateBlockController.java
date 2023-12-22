@@ -20,7 +20,7 @@ public class CreateBlockController {
     private final CreateBlockUseCase useCase;
     private final BlockApiModelMapper mapper;
 
-    @PostMapping("/{id}")
+    @PostMapping
     public BlockApiModel execute(@Valid @RequestBody CreateBlockApiRequest request){
         final Block block = mapper.map(request);
         final Block updated = this.useCase.execute(block);

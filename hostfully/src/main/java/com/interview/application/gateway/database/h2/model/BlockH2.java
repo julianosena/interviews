@@ -24,10 +24,10 @@ public class BlockH2 {
     private UUID id;
 
     @Column(name = "start_date")
-    private LocalDate checkinDate;
+    private LocalDate start;
 
     @Column(name = "end_date")
-    private LocalDate checkoutDate;
+    private LocalDate end;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

@@ -16,8 +16,13 @@ public interface BlockApiModelMapper {
 
     Block map(BlockApiModel block);
 
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Block map(CreateBlockApiRequest block);
 
+
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(source = "id", target = "id")
     Block map(UUID id, UpdateBlockApiRequest request);
 

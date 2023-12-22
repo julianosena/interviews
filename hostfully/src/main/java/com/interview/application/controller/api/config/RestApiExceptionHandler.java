@@ -20,11 +20,18 @@ import java.util.Map;
 @RestControllerAdvice
 public class RestApiExceptionHandler {
 
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleException(final Exception e) {
+        ErrorResponse response = new ErrorResponse();
+        response.setMessage("Unexpected error, contact the administrator");
+        return response;
+    }
+
     @SuppressWarnings("unchecked")
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleNotFoundRestApiResourceException(final MethodArgumentNotValidException e) {
-        log.error("Method Argument Not valid exception", e);
 
         ErrorResponse response = new ErrorResponse();
         response.setMessage("Invalid request");
@@ -49,7 +56,6 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleIllegalArgumentException(final IllegalArgumentException e) {
-        log.error("UseCase exception", e);
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;
@@ -58,7 +64,6 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({UseCaseException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleUseCaseException(final UseCaseException e) {
-        log.error("UseCase exception", e);
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;
@@ -67,7 +72,6 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({BusinessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBusinessException(final BusinessException e) {
-        log.error("BusinessException exception", e);
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;
@@ -76,7 +80,6 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({NotFoundRestApiResourceException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleNotFoundRestApiResourceException(final NotFoundRestApiResourceException e) {
-        log.error("UseCase exception", e);
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;

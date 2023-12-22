@@ -21,7 +21,7 @@ public class CreateBlockUseCase {
             return saveBlockGateway.execute(block);
         }
 
-        throw new UseCaseException("There is availability to create the block for the given period");
+        throw new UseCaseException("There is no availability to create a block for the given period");
     }
 
 }
