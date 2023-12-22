@@ -15,12 +15,17 @@ import static com.interview.application.domain.Booking.Status.PENDING;
 @RequiredArgsConstructor
 public class CreateBookingUseCase {
 
+    private final DoesTheBookingHavaDuplicatedRoomsUseCase doesTheBookingHavaDuplicatedRoomsUseCase;
+    private final DoTheRoomsSupportTotalGuestsAmountUseCase doTheRoomsSupportTotalGuestsAmountUseCase;
     private final IsThereAvailabilityForTheBookingUseCase isThereAvailabilityForTheBookingUseCase;
     private final CreateBookingGateway createBookingGateway;
-    private final DoTheRoomsSupportTotalGuestsAmountUseCase doTheRoomsSupportTotalGuestsAmountUseCase;
 
     public Booking execute(final Booking booking){
         Assert.isNull(booking.getId(), "To create a booking, you must not inform the id");
+
+        if(doesTheBookingHavaDuplicatedRoomsUseCase.execute(booking)){
+            throw new UseCaseException("It is not allow to book twice for the same room");
+        }
 
         if(doTheRoomsSupportTotalGuestsAmountUseCase.execute(booking)){
             if(isThereAvailabilityForTheBookingUseCase.execute(booking)) {
