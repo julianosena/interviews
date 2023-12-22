@@ -5,6 +5,7 @@ import com.interview.application.controller.api.model.mapper.BlockApiModelMapper
 import com.interview.application.controller.api.model.request.UpdateBlockApiRequest;
 import com.interview.application.domain.Block;
 import com.interview.application.usecase.UpdateBlockUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("blocks")
 @RequiredArgsConstructor
+@Tag(name = "Block Management API", description = "This API provides endpoints to perform CRUD operations on blocks.")
 public class UpdateBlockController {
 
     private final UpdateBlockUseCase useCase;

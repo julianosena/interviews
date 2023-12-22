@@ -7,6 +7,7 @@ import com.interview.application.controller.api.model.request.UpdatableBookingPr
 import com.interview.application.domain.Booking;
 import com.interview.application.domain.UpdatableBookingProperties;
 import com.interview.application.usecase.UpdateBookingUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("bookings")
 @RequiredArgsConstructor
+@Tag(name = "Booking Management API", description = "This API provides endpoints to manage bookings.")
 public class UpdateBookingDatesAndGuestDetailsController {
 
     private final UpdateBookingUseCase useCase;

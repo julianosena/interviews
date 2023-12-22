@@ -83,3 +83,15 @@ If You would like to know more about Clean Architecture, [click here](https://bl
 * Database H2 in memory
 * Liquibase for changelogs 
 * Maven dependency managment
+
+## Instructions to use
+
+This project has some random data in terms of, Hotel, Rooms and theirs relationships.
+I could create endpoints to retrieve those, but, It was not part of the challenge scope.
+I created one Hotel and its fifth rooms.
+
+To book, you should follow the steps below:
+
+Run on terminal the script below:
+
+mvn spring-boot:run

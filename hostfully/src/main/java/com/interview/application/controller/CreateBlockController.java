@@ -5,6 +5,7 @@ import com.interview.application.controller.api.model.mapper.BlockApiModelMapper
 import com.interview.application.controller.api.model.request.CreateBlockApiRequest;
 import com.interview.application.domain.Block;
 import com.interview.application.usecase.CreateBlockUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("blocks")
 @RequiredArgsConstructor
+@Tag(name = "Block Management API", description = "This API provides endpoints to perform CRUD operations on blocks.")
 public class CreateBlockController {
 
     private final CreateBlockUseCase useCase;

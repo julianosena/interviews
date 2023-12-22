@@ -6,6 +6,7 @@ import com.interview.application.controller.api.model.request.CreateBookingReque
 import com.interview.application.controller.api.model.translator.CreateBookingRequestToBookingTranslator;
 import com.interview.application.domain.Booking;
 import com.interview.application.usecase.CreateBookingUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("bookings")
 @RequiredArgsConstructor
+@Tag(name = "Booking Management API", description = "This API provides endpoints to manage bookings.")
 public class CreateBookingController {
 
     private final CreateBookingUseCase useCase;
