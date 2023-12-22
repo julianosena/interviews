@@ -13,7 +13,7 @@ import java.util.UUID;
 public class IsThereAvailabilityForTheBookingUseCase {
 
     private final FindBookingsByRoomIdsAndRangeUseCase findBookingsByRoomIdsAndRangeUseCase;
-    private final FindBlocksByRoomIdsAndRangeUseCase findBlocksByRangeUseCase;
+    private final FindBlocksByRangeUseCase findBlocksByRangeUseCase;
     private final FindRoomsByIdsUseCase findRoomsByIdsUseCase;
 
     public boolean execute(final Booking booking) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FindBlocksByRoomIdsAndRangeUseCase {
+public class FindBlocksByRangeUseCase {
 
     private final FindBlocksByRangeGateway findBlocksByRangeGateway;
 

@@ -13,7 +13,7 @@ import static com.interview.application.domain.Booking.Status.PENDING
 class IsThereAvailabilityForTheBookingUseCaseSpec extends Specification {
 
     private FindBookingsByRoomIdsAndRangeUseCase findBookingsByRoomIdsAndRangeUseCase = Mock(FindBookingsByRoomIdsAndRangeUseCase)
-    private FindBlocksByRoomIdsAndRangeUseCase findBlocksByRoomIdsAndRangeUseCase = Mock(FindBlocksByRoomIdsAndRangeUseCase)
+    private FindBlocksByRangeUseCase findBlocksByRoomIdsAndRangeUseCase = Mock(FindBlocksByRangeUseCase)
     private FindRoomsByIdsUseCase findRoomsByIdsUseCase = Mock(FindRoomsByIdsUseCase)
     def useCase = new IsThereAvailabilityForTheBookingUseCase(findBookingsByRoomIdsAndRangeUseCase, findBlocksByRoomIdsAndRangeUseCase, findRoomsByIdsUseCase)
 
