@@ -41,21 +41,24 @@ This project demonstrates the implementation of Clean Architecture, a software d
 ![img_1.png](documentation/img/clea-architecture.png)
 
 ### Overview
-**Entities**:<br> Represent core business entities with embedded business rules and logic.
+**Entities**:<br /><br />
+Represent core business entities with embedded business rules and logic.
 
-**Use Cases (Interactors)**:<br> Contain application-specific business rules and orchestrate data flow between entities and interfaces.
+**Use Cases (Interactors)**:<br /><br />
+Contain application-specific business rules and orchestrate data flow between entities and interfaces.
 
-**Interfaces (Adapters)**:<br> Connect use cases to external systems (e.g., databases, frameworks) and handle data conversion.
+**Interfaces (Adapters)**:<br /><br />
+Connect use cases to external systems (e.g., databases, frameworks) and handle data conversion.
 
-**Frameworks & Drivers**:<br>
+**Frameworks & Drivers**:<br /><br />
 Utilize external frameworks and tools such as web frameworks, databases, and UI components, maintaining flexibility and ease of replacement.
 
-**Project Structure**<br>
+**Project Structure**<br /><br />
 The codebase is organized using Clean Architecture principles with distinct packages for domain entities, use cases, infrastructure (persistence and presentation), and the application entry point.
 
-**Explanation**<br>
+**Explanation**<br /><br />
 All of classes should have one method and specific responsibility. The name of the operation / action / responsibility goes to the name of the class, and the class should have just one method named execute.
-The code speaks for itself, no need for comments or any explanation, for example: <br>
+The code speaks for itself, no need comments or any explanation, for example: <br>
 
 ```java
 CreateBookingUseCase createBookingUseCase = new CreateBookingUseCase();
