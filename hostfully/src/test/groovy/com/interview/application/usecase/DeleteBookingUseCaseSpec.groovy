@@ -9,8 +9,9 @@ import spock.lang.Specification
 class DeleteBookingUseCaseSpec extends Specification {
 
     def findBookingByIdUseCase = Mock(FindBookingByIdUseCase)
+    def doesTheBookingHasParentBookingUseCase = Mock(DoesTheBookingHasParentBookingUseCase)
     def deleteBookingGateway = Mock(DeleteBookingGateway)
-    def useCase = new DeleteBookingUseCase(findBookingByIdUseCase, deleteBookingGateway)
+    def useCase = new DeleteBookingUseCase(findBookingByIdUseCase, doesTheBookingHasParentBookingUseCase, deleteBookingGateway)
 
     def "It should delete a booking with success"(){
         given: "valid and existent booking"
@@ -22,6 +23,11 @@ class DeleteBookingUseCaseSpec extends Specification {
         then : "find booking by id process should return an existent one"
         1 * findBookingByIdUseCase.execute(booking.id) >> {
             Optional.of(booking)
+        }
+
+        and : "does the booking has parent process should be called and return false"
+        doesTheBookingHasParentBookingUseCase.execute(booking) >> {
+            false
         }
 
         and : "the delete process should be executed with success"
@@ -39,6 +45,9 @@ class DeleteBookingUseCaseSpec extends Specification {
 
         then : "find booking by id process should not be called"
         0 * findBookingByIdUseCase.execute(id)
+
+        and : "does the booking has parent process should not be called"
+        0 * doesTheBookingHasParentBookingUseCase.execute(_ as Booking)
 
         and : "the process of deletion booking should not be called"
         0 * deleteBookingGateway.execute(_ as Booking)
@@ -61,6 +70,9 @@ class DeleteBookingUseCaseSpec extends Specification {
         1 * findBookingByIdUseCase.execute(id) >> {
             Optional.empty()
         }
+
+        and : "does the booking has parent process should not be called"
+        0 * doesTheBookingHasParentBookingUseCase.execute(_ as Booking)
 
         and : "the process of cancellation booking should not be called"
         0 * deleteBookingGateway.execute(_ as Booking)

@@ -6,7 +6,6 @@ import com.interview.application.domain.RoomType
 import org.spockframework.util.Assert
 
 import java.time.Instant
-import java.time.LocalDateTime
 
 class RoomFixture {
 
@@ -60,8 +59,8 @@ class RoomFixture {
                         description : "Standard Room",
                         rateAdult : new BigDecimal("100.00"),
                         rateChildren : new BigDecimal("50.00"),
-                        createdAt: LocalDateTime.now(),
-                        updatedAt: LocalDateTime.now()
+                        createdAt: Instant.now(),
+                        updatedAt: Instant.now()
                 ]),
                 RoomTypeFixture.create([
                         id : UUID.randomUUID(),
@@ -69,8 +68,8 @@ class RoomFixture {
                         description : "Deluxe Room",
                         rateAdult : new BigDecimal("150.00"),
                         rateChildren : new BigDecimal("75.00"),
-                        createdAt: LocalDateTime.now(),
-                        updatedAt: LocalDateTime.now()
+                        createdAt: Instant.now(),
+                        updatedAt: Instant.now()
                 ])
         ]
 
@@ -111,8 +110,8 @@ class RoomFixture {
                         maxOccupancy: (roomNumber % 5) + 1,
                         isAvailable: random.nextBoolean(),
                         attributes: attributes,
-                        createdAt: LocalDateTime.now(),
-                        updatedAt: LocalDateTime.now()
+                        createdAt: Instant.now(),
+                        updatedAt: Instant.now()
                 ]
 
                 roomInstances.add(create(roomParameters))

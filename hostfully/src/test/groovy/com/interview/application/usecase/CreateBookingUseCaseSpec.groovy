@@ -14,9 +14,11 @@ import static com.interview.application.domain.Booking.Status.PENDING
 
 class CreateBookingUseCaseSpec extends Specification {
 
+    def doesTheBookingHaveDuplicatedRoomsUseCase = Mock(DoesTheBookingHaveDuplicatedRoomsUseCase)
+    def doTheRoomsSupportTotalGuestsAmountUseCase = Mock(DoTheRoomsSupportTotalGuestsAmountUseCase)
     def isThereAvailabilityForTheBookingUseCase = Mock(IsThereAvailabilityForTheBookingUseCase)
-    def saveBookingGateway = Mock(CreateBookingGateway)
-    def useCase = new CreateBookingUseCase(isThereAvailabilityForTheBookingUseCase, saveBookingGateway)
+    def createBookingGateway = Mock(CreateBookingGateway)
+    def useCase = new CreateBookingUseCase(doesTheBookingHaveDuplicatedRoomsUseCase, doTheRoomsSupportTotalGuestsAmountUseCase, isThereAvailabilityForTheBookingUseCase, createBookingGateway)
 
     def "It should create booking for a room in a Hotel with success"(){
         given: "Valid and existent hotel"
@@ -55,13 +57,23 @@ class CreateBookingUseCaseSpec extends Specification {
         when : "use case is called"
         Booking reserved = useCase.execute(booking)
 
-        then : "checking availability process should return that there is availability for this booking"
+        then : "does the booking have duplicated rooms process should be called and return false"
+        1 * doesTheBookingHaveDuplicatedRoomsUseCase.execute(booking) >> {
+            false
+        }
+
+        and : "do the rooms support total guests amount process should be called and return true"
+        1 * doTheRoomsSupportTotalGuestsAmountUseCase.execute(booking) >> {
+            true
+        }
+
+        and : "checking availability process should return that there is availability for this booking"
         1 * isThereAvailabilityForTheBookingUseCase.execute(booking) >> {
             true
         }
 
         and : "the process of creation booking should be executed with success"
-        1 * saveBookingGateway.execute(booking) >> {
+        1 * this.createBookingGateway.execute(booking) >> {
             BookingFixture.create([
                     id : UUID.randomUUID(),
                     booker : BookerFixture.create(id : UUID.randomUUID()),
@@ -118,21 +130,30 @@ class CreateBookingUseCaseSpec extends Specification {
         when : "use case is called"
         useCase.execute(booking)
 
-        then : "checking availability process should return that there is availability for this booking"
+        then : "does the booking have duplicated rooms process should be called and return false"
+        1 * doesTheBookingHaveDuplicatedRoomsUseCase.execute(booking) >> {
+            false
+        }
+
+        and : "do the rooms support total guests amount process should be called and return true"
+        1 * doTheRoomsSupportTotalGuestsAmountUseCase.execute(booking) >> {
+            true
+        }
+
+        and : "checking availability process should return that there is availability for this booking"
         1 * isThereAvailabilityForTheBookingUseCase.execute(booking) >> {
             false
         }
 
         and : "the process of creation booking should not be executed"
-        0 * saveBookingGateway.execute(booking)
+        0 * this.createBookingGateway.execute(booking)
 
         and : "the use case should throw an expcetion"
         def e = thrown(UseCaseException)
         and : "exception should not be null"
         null != e
         and : "its message should be the expected"
-        e.message == "There is no availability for this period and " +
-                "room(s) " + booking.getRoomBookings() + " " +
+        e.message == "There is no availability for the selected rooms within the given period " +
                 booking.getCheckinDate() + " up to " + booking.getCheckoutDate()
     }
 }

@@ -6,7 +6,7 @@ import com.interview.application.domain.RoomBooking;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DoesTheBookingHavaDuplicatedRoomsUseCase {
+public class DoesTheBookingHaveDuplicatedRoomsUseCase {
 
     public boolean execute(final Booking booking){
         long count = booking.getRoomBookings()

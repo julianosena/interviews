@@ -1,5 +1,50 @@
 # BOOKING HOSTIFULLY
 
+### How was the system was develop.
+
+You can within a booking, book more than one room for the same book.
+You can only book a rooms that are available 'IS_AVAILABLE=TRUE'. I've created it because It is recommended when you as a manager would like to unable that specific room for any reasons.
+It also validates if the total amount of guests is supported by rooms
+
+All of others rules to book are implements as mentioned in the requirements of this challenge.
+
+## Instructions to use
+
+This project has some random data in terms of, Hotel, Rooms and theirs relationships.
+I could create endpoints to retrieve those, but, It was not part of the challenge scope.
+I created one Hotel and its fifth rooms.
+
+To book, you should follow the steps below:
+
+Run on terminal the script below:
+
+```shell
+sh application.sh
+```
+than, click in this link right [here](http://localhost:8080/h2-console)
+
+You will see the form below: <br /><br />
+![img.png](documentation/img/H2-form-login.png)
+
+### Fill it with the values below
+
+| Fields      | Value                  |
+|-------------|------------------------|
+| `JDBC URL`  | jdbc:h2:mem:hostfully  |
+| `User Name` | sa                     |
+
+than, on the righ side text field as the image below the command
+```sql
+SELECT * FROM ROOM
+```
+![img.png](documentation/img/h2-console.png)
+
+Choose one or more ids of the rooms to send afterward within booking request.
+
+### API Documentation
+
+Access the swagger to make requests clicking [here](http://localhost:8080/swagger-ui/index.html#/)
+
 ## Block Management API
 
 This API provides endpoints to perform CRUD operations on blocks.
@@ -29,10 +74,6 @@ This API provides endpoints to manage bookings.
 | DELETE | `/bookings/{bookingId}`             | Delete a booking from the system                      |
 | GET    | `/bookings/{bookingId}`             | Get details of a specific booking                     |
 | GET    | `/bookings`                         | Retrieve all bookings                                 |
-
-### API Documentation
-
-For more detailed information on request and response formats, start the application and access the swagger, click [here](https://localhost:8080/)
 
 ### Technical
 
@@ -83,18 +124,3 @@ If You would like to know more about Clean Architecture, [click here](https://bl
 * Database H2 in memory
 * Liquibase for changelogs 
 * Maven dependency managment
-
-## Instructions to use
-
-This project has some random data in terms of, Hotel, Rooms and theirs relationships.
-I could create endpoints to retrieve those, but, It was not part of the challenge scope.
-I created one Hotel and its fifth rooms.
-
-To book, you should follow the steps below:
-
-Run on terminal the script below:
-
-Windows
-```shell
-sh 
-```

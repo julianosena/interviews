@@ -7,14 +7,16 @@ class UpdatableRoomBookingPropertiesFixture {
 
     static def create(def parameters = [:]){
         def defaultValues = [
-                id : UUID.randomUUID(),
+                roomId : UUID.randomUUID(),
+                bookingId : UUID.randomUUID(),
                 guestName : "Fulano de Tal",
                 guestEmail : "fulano.tal@gmail.com"
         ]
         def values = defaultValues + parameters
 
         return UpdatableRoomBookingProperties.builder()
-            .roomId(values.id as UUID)
+            .roomId(values.roomId as UUID)
+            .bookingId(values.bookingId as UUID)
             .guestName(values.guestName as String)
             .guestEmail(values.guestEmail as String)
             .build()

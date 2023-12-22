@@ -5,6 +5,7 @@ import com.interview.application.domain.Hotel
 import com.interview.application.domain.exception.BusinessException
 import com.interview.application.domain.fixture.*
 import com.interview.application.gateway.CreateBookingGateway
+import com.interview.application.gateway.SaveBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
@@ -15,7 +16,7 @@ import static com.interview.application.domain.Booking.Status.*
 class CancelBookingUseCaseSpec extends Specification {
 
     def findBookingByIdUseCase = Mock(FindBookingByIdUseCase)
-    def saveBookingGateway = Mock(CreateBookingGateway)
+    def saveBookingGateway = Mock(SaveBookingGateway)
     CancelBookingUseCase useCase = new CancelBookingUseCase(findBookingByIdUseCase, saveBookingGateway)
 
     def "It should cancel booking with success"(){

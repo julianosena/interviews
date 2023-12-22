@@ -5,6 +5,7 @@ import com.interview.application.domain.Hotel
 import com.interview.application.domain.UpdatableBookingProperties
 import com.interview.application.domain.fixture.*
 import com.interview.application.gateway.CreateBookingGateway
+import com.interview.application.gateway.SaveBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
@@ -17,7 +18,7 @@ import static com.interview.application.domain.Booking.Status.PENDING
 class UpdateBookingUseCaseSpec extends Specification {
 
     def isThereAvailabilityForTheBookingUseCase = Mock(IsThereAvailabilityForTheBookingUseCase)
-    def saveBookingGateway = Mock(CreateBookingGateway)
+    def saveBookingGateway = Mock(SaveBookingGateway)
     def findBookingByIdUseCase = Mock(FindBookingByIdUseCase)
 
     def useCase = new UpdateBookingUseCase(isThereAvailabilityForTheBookingUseCase, saveBookingGateway, findBookingByIdUseCase)
@@ -58,7 +59,8 @@ class UpdateBookingUseCaseSpec extends Specification {
 
         and : "the booker would like to update the checkin, checkout dates and the guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([
-                id : roomBooking.id,
+                roomId : roomBooking.room.id,
+                bookingId : roomBooking.booking.id,
                 guestName : "Ciclana de Tal",
                 guestEmail : "ciclana.tal@gmail.com"
         ])
@@ -92,7 +94,7 @@ class UpdateBookingUseCaseSpec extends Specification {
                     numberOfAdults: 2,
                     numberOfChildren: 1,
                     roomBookings: [RoomBookingFixture.create(
-                            id : roomBooking.id,
+                            booking : booking,
                             room : selectedRoom,
                             guestName: updatableRoomBookProperties.guestName,
                             guestEmail: updatableRoomBookProperties.guestEmail
@@ -114,7 +116,8 @@ class UpdateBookingUseCaseSpec extends Specification {
         updated.checkoutDate == LocalDate.now().plusMonths(2)
 
         and : "the room booking guest details should be updated"
-        updated.roomBookings[0].id == roomBooking.id
+        updated.roomBookings[0].room.id == roomBooking.room.id
+        updated.roomBookings[0].booking.id == roomBooking.booking.id
         updated.roomBookings[0].guestName == updatableRoomBookProperties.guestName
         updated.roomBookings[0].guestEmail == updatableRoomBookProperties.guestEmail
 
@@ -185,6 +188,7 @@ class UpdateBookingUseCaseSpec extends Specification {
         1 * saveBookingGateway.execute(booking) >> {
             BookingFixture.create([
                     id : booking.id,
+                    room : selectedRoom,
                     booker : booker,
                     checkinDate: updatableBookProperties.checkinDate,
                     checkoutDate: updatableBookProperties.checkoutDate,
@@ -208,7 +212,8 @@ class UpdateBookingUseCaseSpec extends Specification {
         updated.checkoutDate == LocalDate.now().plusMonths(2)
 
         and : "the room booking guest details should not be updated"
-        updated.roomBookings[0].id == roomBooking.id
+        updated.roomBookings[0].room.id == roomBooking.room.id
+        updated.roomBookings[0].booking.id == roomBooking.booking.id
         updated.roomBookings[0].guestName == roomBooking.guestName
         updated.roomBookings[0].guestEmail == roomBooking.guestEmail
 
@@ -256,7 +261,8 @@ class UpdateBookingUseCaseSpec extends Specification {
 
         and : "the booker would like to update only the guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([
-                id : roomBooking.id,
+                roomId : roomBooking.room.id,
+                bookingId : roomBooking.booking.id,
                 guestName : "Ciclana de Tal",
                 guestEmail : "ciclana.tal@gmail.com"
         ])
@@ -265,7 +271,6 @@ class UpdateBookingUseCaseSpec extends Specification {
                 checkoutDate : null,
                 roomBookings: [updatableRoomBookProperties]
         ])
-
 
         when : "use case is called"
         Booking updated = useCase.execute(booking.id, updatableBookProperties)
@@ -290,7 +295,7 @@ class UpdateBookingUseCaseSpec extends Specification {
                     numberOfAdults: 2,
                     numberOfChildren: 1,
                     roomBookings: [RoomBookingFixture.create(
-                            id : roomBooking.id,
+                            booking : booking,
                             room : selectedRoom,
                             guestName: updatableRoomBookProperties.guestName,
                             guestEmail: updatableRoomBookProperties.guestEmail
@@ -312,7 +317,8 @@ class UpdateBookingUseCaseSpec extends Specification {
         updated.checkoutDate == LocalDate.now().plusMonths(1)
 
         and : "the room booking guest details should be updated"
-        updated.roomBookings[0].id == roomBooking.id
+        updated.roomBookings[0].room.id == roomBooking.room.id
+        updated.roomBookings[0].booking.id == roomBooking.booking.id
         updated.roomBookings[0].guestName == updatableRoomBookProperties.guestName
         updated.roomBookings[0].guestEmail == updatableRoomBookProperties.guestEmail
 
@@ -410,7 +416,8 @@ class UpdateBookingUseCaseSpec extends Specification {
 
         and : "the booker would like to update only guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([
-                id : roomBooking.id,
+                roomId : roomBooking.room.id,
+                bookingId : roomBooking.booking.id,
                 guestName : "Ciclana de Tal",
                 guestEmail : "ciclana.tal@gmail.com"
         ])
@@ -475,7 +482,8 @@ class UpdateBookingUseCaseSpec extends Specification {
 
         and : "the booker would like to update the checkin, checkout dates and the guest data"
         def updatableRoomBookProperties = UpdatableRoomBookingPropertiesFixture.create([
-                id : roomBooking.id,
+                roomId : roomBooking.room.id,
+                bookingId : roomBooking.booking.id,
                 guestName : "Ciclana de Tal",
                 guestEmail : "ciclana.tal@gmail.com"
         ])
