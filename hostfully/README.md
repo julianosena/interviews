@@ -94,4 +94,7 @@ To book, you should follow the steps below:
 
 Run on terminal the script below:
 
-mvn spring-boot:run
+Windows
+```shell
+sh 
+```
