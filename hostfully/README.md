@@ -7,8 +7,9 @@ You can only book a rooms that are available 'IS_AVAILABLE=TRUE'. I've created i
 It also validates if the total amount of guests is supported by rooms.
 
 I've created a status flow and process, but, you are able just to cancel the booking, not pay, refund and etc. It is just to show, we have to consider it within a real booking project 
+When you cancel and re-book, the system keep the history all bookings canceled and active, using linked list datastructures, where the nodes are previousBookin property. After re-booking action, you will be able to see the older booking there. 
 
-All of others rules to book are implements as mentioned in the requirements of this challenge.
+All others rules to book are implements as mentioned in the requirements of this challenge.
 
 ## Instructions to use
 
@@ -133,6 +134,12 @@ If You would like to know more about Clean Architecture, [click here](https://bl
 * Database H2 in memory
 * Liquibase for changelogs 
 * Maven dependency managment
+
+## Database diagram
+
+![img_1.png](documentation/img/database.png)
+
+ROOM_TYPE_RATE - It is an idea to use (I couldn't do this, because of time) to hike prices or make seasonal promotions, like Christmas and etc.
 
 ### FYI
 

@@ -16,4 +16,4 @@ CREATE TABLE BOOKING (
     CONSTRAINT FK_BOOKING_BOOKER
         FOREIGN KEY (booker_id)
             REFERENCES BOOKER(booker_id)
-)
+);

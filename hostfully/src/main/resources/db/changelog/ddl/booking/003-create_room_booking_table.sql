@@ -12,4 +12,4 @@ CREATE TABLE ROOM_BOOKING (
     CONSTRAINT FK_BOOKING_ROOM
         FOREIGN KEY (room_id)
             REFERENCES ROOM(room_id)
-)
+);
