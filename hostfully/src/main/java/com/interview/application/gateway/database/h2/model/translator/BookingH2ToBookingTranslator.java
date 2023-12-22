@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-public class BookingH2ToRoomTranslator {
+public class BookingH2ToBookingTranslator {
 
     private final static BookingH2Mapper bookingH2Mapper = Mappers.getMapper(BookingH2Mapper.class);
     private final static RoomBookingH2Mapper roomBookingH2Mapper = Mappers.getMapper(RoomBookingH2Mapper.class);

@@ -1,11 +1,11 @@
 package com.interview.application.usecase;
 
 import com.interview.application.domain.Booking;
+import com.interview.application.gateway.FindBookingByRoomIdsAndRangeGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,8 +13,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FindBookingsByRoomIdsAndRangeUseCase {
 
+    private final FindBookingByRoomIdsAndRangeGateway findBookingByRoomIdsAndRangeGateway;
+
     public List<Booking> execute(List<UUID> ids, LocalDate checkinDate, LocalDate checkoutDate){
-        return Collections.emptyList();
+        return findBookingByRoomIdsAndRangeGateway.execute(ids, checkinDate, checkoutDate);
     }
 
 }

@@ -41,7 +41,7 @@ public class BookingH2 {
     @Column(name = "number_of_children")
     private Long numberOfChildren;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<RoomBookingH2> roomBookings;
 
     @Column(name = "total_amount")
@@ -58,7 +58,7 @@ public class BookingH2 {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "previous_booking_id")
     private BookingH2 previousBooking;
 

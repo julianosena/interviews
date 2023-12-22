@@ -6,7 +6,7 @@ import com.interview.application.domain.UpdatableBookingProperties;
 import com.interview.application.domain.UpdatableRoomBookingProperties;
 import com.interview.application.domain.mapper.BookingMapper;
 import com.interview.application.domain.mapper.RoomBookingMapper;
-import com.interview.application.gateway.CreateBookingGateway;
+import com.interview.application.gateway.SaveBookingGateway;
 import com.interview.application.usecase.exception.UseCaseException;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class UpdateBookingUseCase {
 
     private final IsThereAvailabilityForTheBookingUseCase isThereAvailabilityForTheBookingUseCase;
-    private final CreateBookingGateway createBookingGateway;
+    private final SaveBookingGateway saveBookingGateway;
     private final FindBookingByIdUseCase findBookingByIdUseCase;
 
     public Booking execute(final UUID id, final UpdatableBookingProperties properties){
@@ -45,7 +45,7 @@ public class UpdateBookingUseCase {
             }
 
             if(isThereAvailabilityForTheBookingUseCase.execute(booking)){
-                return createBookingGateway.execute(booking);
+                return saveBookingGateway.execute(booking);
             }
 
             throw new UseCaseException("There is no availability for " +

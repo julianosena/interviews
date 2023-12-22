@@ -1,5 +1,6 @@
 package com.interview.application.controller.api.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,8 @@ public class BookingApiModel {
     private LocalDate checkoutDate;
     private Long numberOfAdults;
     private Long numberOfChildren;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<RoomBookingApiModel> roomBookings;
 
     @Setter(AccessLevel.NONE)

@@ -36,6 +36,20 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Object
             endDateField.setAccessible(true);
             LocalDate endLocalDate = (LocalDate) endDateField.get(value);
 
+            if(null != startLocalDate && null == endLocalDate) {
+                final String message = endDateField.getName() + " must be informed";
+                context.buildConstraintViolationWithTemplate(message)
+                        .addPropertyNode(start)
+                        .addConstraintViolation();
+            }
+
+            if (null == startLocalDate && null != endLocalDate){
+                final String message = startDateField.getName() + " must be informed";
+                context.buildConstraintViolationWithTemplate(message)
+                        .addPropertyNode(start)
+                        .addConstraintViolation();
+            }
+
             if (startLocalDate != null && endLocalDate != null && startLocalDate.isBefore(endLocalDate)) {
                 return true;
             } else {

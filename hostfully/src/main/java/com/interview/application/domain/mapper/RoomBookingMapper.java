@@ -5,6 +5,7 @@ import com.interview.application.domain.UpdatableRoomBookingProperties;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper
 public interface RoomBookingMapper {
@@ -13,6 +14,8 @@ public interface RoomBookingMapper {
     @Mapping(target = "room", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "guestName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "guestEmail", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void map(UpdatableRoomBookingProperties source, @MappingTarget RoomBooking roomBooking);
 
 }

@@ -1,7 +1,7 @@
 package com.interview.application.usecase;
 
 import com.interview.application.domain.Booking;
-import com.interview.application.gateway.CreateBookingGateway;
+import com.interview.application.gateway.SaveBookingGateway;
 import com.interview.application.usecase.exception.UseCaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.UUID;
 public class CancelBookingUseCase {
 
     private final FindBookingByIdUseCase findBookingByIdUseCase;
-    private final CreateBookingGateway createBookingGateway;
+    private final SaveBookingGateway saveBookingGateway;
 
     public Booking execute(final UUID id){
         Assert.notNull(id, "You must inform the id to cancel the booking");
@@ -23,7 +23,7 @@ public class CancelBookingUseCase {
                 .orElseThrow(() -> new UseCaseException("You can not cancel a non existent booking"));
         booking.cancel();
 
-        return createBookingGateway.execute(booking);
+        return saveBookingGateway.execute(booking);
     }
 
 }

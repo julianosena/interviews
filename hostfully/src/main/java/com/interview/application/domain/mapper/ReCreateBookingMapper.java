@@ -9,6 +9,7 @@ public interface ReCreateBookingMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "booker.id", ignore = true)
+    @Mapping(target = "booker.address.id", ignore = true)
     @Mapping(target = "roomBookings", ignore = true)
     @Mapping(target = "previousBooking", ignore = true)
     Booking map(Booking source);

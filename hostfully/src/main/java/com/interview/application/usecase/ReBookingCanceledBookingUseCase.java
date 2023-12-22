@@ -38,6 +38,6 @@ public class ReBookingCanceledBookingUseCase {
         }
         reCreatedBooking.setPreviousBooking(booking);
 
-        return createBookingUseCase.execute(booking);
+        return createBookingUseCase.execute(reCreatedBooking);
     }
 }
