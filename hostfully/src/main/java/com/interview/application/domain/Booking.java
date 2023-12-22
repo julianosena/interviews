@@ -1,14 +1,13 @@
 package com.interview.application.domain;
 
 import com.interview.application.domain.exception.BusinessException;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,14 +26,15 @@ public class Booking {
     private Long numberOfAdults;
     private Long numberOfChildren;
     private List<RoomBooking> roomBookings;
-
-    @Setter(AccessLevel.NONE)
     private BigDecimal totalAmount;
-
     private Status status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
     private Booking previousBooking;
+
+    public long getTotalAmountOfGuests(){
+        return (numberOfAdults + numberOfChildren);
+    }
 
     public boolean isAllowedToUpdate(){
         return (status.equals(Status.PENDING));
@@ -50,18 +50,6 @@ public class Booking {
         } else {
             throw new BusinessException("You are allowed to cancel only pending or paid bookings");
         }
-    }
-
-    public BigDecimal getTotalAmount(){
-        if(null == this.totalAmount){
-            this.totalAmount = this.roomBookings.stream().map(roomBooking -> {
-               BigDecimal adultsRate = roomBooking.getRoom().getType().getRateAdult().multiply(new BigDecimal(this.numberOfAdults));
-               BigDecimal childrenRate = roomBooking.getRoom().getType().getRateChildren().multiply(new BigDecimal(this.numberOfChildren));
-               return adultsRate.add(childrenRate);
-            }).reduce(BigDecimal.ZERO, BigDecimal::add);
-        }
-
-        return this.totalAmount;
     }
 
     public enum Status {

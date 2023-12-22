@@ -4,7 +4,7 @@ import com.interview.application.domain.Booking
 import com.interview.application.domain.Hotel
 import com.interview.application.domain.UpdatableBookingProperties
 import com.interview.application.domain.fixture.*
-import com.interview.application.gateway.SaveBookingGateway
+import com.interview.application.gateway.CreateBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
@@ -17,7 +17,7 @@ import static com.interview.application.domain.Booking.Status.PENDING
 class UpdateBookingUseCaseSpec extends Specification {
 
     def isThereAvailabilityForTheBookingUseCase = Mock(IsThereAvailabilityForTheBookingUseCase)
-    def saveBookingGateway = Mock(SaveBookingGateway)
+    def saveBookingGateway = Mock(CreateBookingGateway)
     def findBookingByIdUseCase = Mock(FindBookingByIdUseCase)
 
     def useCase = new UpdateBookingUseCase(isThereAvailabilityForTheBookingUseCase, saveBookingGateway, findBookingByIdUseCase)

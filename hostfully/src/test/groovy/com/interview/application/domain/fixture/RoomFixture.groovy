@@ -5,6 +5,7 @@ import com.interview.application.domain.Room
 import com.interview.application.domain.RoomType
 import org.spockframework.util.Assert
 
+import java.time.Instant
 import java.time.LocalDateTime
 
 class RoomFixture {
@@ -17,8 +18,8 @@ class RoomFixture {
                 maxOccupancy : 3,
                 isAvailable : true,
                 attributes : [],
-                createdAt : LocalDateTime.now(),
-                updatedAt : LocalDateTime.now()
+                createdAt : Instant.now(),
+                updatedAt : Instant.now()
         ]
         def values = defaultValues + parameters
 
@@ -32,8 +33,8 @@ class RoomFixture {
                 .maxOccupancy(values.maxOccupancy as Long)
                 .available(values.isAvailable as Boolean)
                 .attributes(values.attributes as List)
-                .createdAt(values.createdAt as LocalDateTime)
-                .updatedAt(values.updatedAt as LocalDateTime)
+                .createdAt(values.createdAt as Instant)
+                .updatedAt(values.updatedAt as Instant)
                 .build()
     }
 

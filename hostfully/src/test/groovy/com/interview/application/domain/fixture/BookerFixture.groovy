@@ -3,7 +3,7 @@ package com.interview.application.domain.fixture
 import com.interview.application.domain.Address
 import com.interview.application.domain.Booker
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 class BookerFixture {
 
@@ -14,8 +14,8 @@ class BookerFixture {
                 lastName : "Del Toro",
                 email : "fulano.toro@gmail.com",
                 address : AddressFixture.create(),
-                createdAt : LocalDateTime.now(),
-                updatedAt : LocalDateTime.now()
+                createdAt : Instant.now(),
+                updatedAt : Instant.now()
         ]
         def values = defaultValues + parameters
 
@@ -25,8 +25,8 @@ class BookerFixture {
                 .lastName(values.lastName as String)
                 .email(values.email as String)
                 .address(values.address as Address)
-                .createdAt(values.createdAt as LocalDateTime)
-                .updatedAt(values.updatedAt as LocalDateTime)
+                .createdAt(values.createdAt as Instant)
+                .updatedAt(values.updatedAt as Instant)
                 .build()
     }
 }

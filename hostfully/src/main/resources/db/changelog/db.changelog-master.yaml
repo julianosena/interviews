@@ -1,9 +1,11 @@
 databaseChangeLog:
   - includeAll:
-        path: classpath:db/changelog/address
+        path: classpath:db/changelog/ddl/address
   - includeAll:
-      path: classpath:db/changelog/hotel
+      path: classpath:db/changelog/ddl/hotel
   - includeAll:
-      path: classpath:db/changelog/room
+      path: classpath:db/changelog/ddl/room
   - includeAll:
-      path: classpath:db/changelog/booking
+      path: classpath:db/changelog/ddl/booking
+  - includeAll:
+      path: classpath:db/changelog/dml

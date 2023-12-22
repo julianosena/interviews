@@ -5,21 +5,19 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.time.Instant;
 
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode( of = { "id" })
+@EqualsAndHashCode( of = { "booking", "room" })
 public class RoomBooking {
 
-    private UUID id;
     private Booking booking;
     private Room room;
     private String guestName;
     private String guestEmail;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 
 }

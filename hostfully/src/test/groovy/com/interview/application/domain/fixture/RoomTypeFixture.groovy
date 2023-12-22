@@ -1,9 +1,8 @@
 package com.interview.application.domain.fixture
 
-
 import com.interview.application.domain.RoomType
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 class RoomTypeFixture {
 
@@ -14,8 +13,8 @@ class RoomTypeFixture {
                 description: "19X",
                 rateAdult : new BigDecimal("100.00"),
                 rateChildren : new BigDecimal("50.00"),
-                createdAt : LocalDateTime.now(),
-                updatedAt : LocalDateTime.now()
+                createdAt : Instant.now(),
+                updatedAt : Instant.now()
         ]
         def values = defaultValues + parameters
 
@@ -25,8 +24,8 @@ class RoomTypeFixture {
                 .description(values.description as String)
                 .rateAdult(values.rateAdult as BigDecimal)
                 .rateChildren(values.rateChildren as BigDecimal)
-                .createdAt(values.createdAt as LocalDateTime)
-                .updatedAt(values.updatedAt as LocalDateTime)
+                .createdAt(values.createdAt as Instant)
+                .updatedAt(values.updatedAt as Instant)
                 .build()
     }
 }

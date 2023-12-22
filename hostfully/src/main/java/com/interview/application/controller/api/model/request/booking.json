@@ -1,0 +1,25 @@
+{
+  "booker" : {
+    "firstName" : "",
+    "lastName" : "",
+    "email" : "",
+    "address" : {
+      "street" : "",
+      "city" : "",
+      "state" : "",
+      "postalCode" : "",
+      "country" : ""
+    },
+    "checkinDate" : "",
+    "checkoutDate" : "",
+    "numberOfAdults" : "",
+    "numberOfChildren" : "",
+    "roomBookings" : [
+      {
+        "roomId" : "",
+        "guestName" : "",
+        "guestEmail" : ""
+      }
+    ]
+  }
+}

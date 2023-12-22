@@ -6,7 +6,7 @@ import com.interview.application.domain.UpdatableBookingProperties;
 import com.interview.application.domain.UpdatableRoomBookingProperties;
 import com.interview.application.domain.mapper.BookingMapper;
 import com.interview.application.domain.mapper.RoomBookingMapper;
-import com.interview.application.gateway.SaveBookingGateway;
+import com.interview.application.gateway.CreateBookingGateway;
 import com.interview.application.usecase.exception.UseCaseException;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class UpdateBookingUseCase {
 
     private final IsThereAvailabilityForTheBookingUseCase isThereAvailabilityForTheBookingUseCase;
-    private final SaveBookingGateway saveBookingGateway;
+    private final CreateBookingGateway createBookingGateway;
     private final FindBookingByIdUseCase findBookingByIdUseCase;
 
     public Booking execute(final UUID id, final UpdatableBookingProperties properties){
@@ -36,7 +36,8 @@ public class UpdateBookingUseCase {
                 for (UpdatableRoomBookingProperties updatableRoomBooking : properties.getRoomBookings()) {
                     RoomBooking roomBooking = booking.getRoomBookings()
                             .stream()
-                            .filter(item -> item.getId().equals(updatableRoomBooking.getId()))
+                            .filter(item -> item.getRoom().getId().equals(updatableRoomBooking.getRoomId()))
+                            .filter(item -> item.getBooking().getId().equals(updatableRoomBooking.getBookingId()))
                             .findFirst()
                             .orElseThrow(() -> new UseCaseException("You can not update a non-existent room booking"));
                     Mappers.getMapper(RoomBookingMapper.class).map(updatableRoomBooking, roomBooking);
@@ -44,7 +45,7 @@ public class UpdateBookingUseCase {
             }
 
             if(isThereAvailabilityForTheBookingUseCase.execute(booking)){
-                return saveBookingGateway.execute(booking);
+                return createBookingGateway.execute(booking);
             }
 
             throw new UseCaseException("There is no availability for " +

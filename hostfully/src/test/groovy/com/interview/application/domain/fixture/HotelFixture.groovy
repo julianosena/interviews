@@ -2,7 +2,7 @@ package com.interview.application.domain.fixture
 
 import com.interview.application.domain.Hotel
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 class HotelFixture {
 
@@ -11,8 +11,8 @@ class HotelFixture {
                 id : UUID.randomUUID(),
                 name : "Z Hotel of London",
                 rooms : [],
-                createdAt : LocalDateTime.now(),
-                updatedAt : LocalDateTime.now()
+                createdAt : Instant.now(),
+                updatedAt : Instant.now()
         ]
 
         def values = defaultValues + parameters
@@ -21,8 +21,8 @@ class HotelFixture {
                 .id(values.id as UUID)
                 .name(values.name as String)
                 .rooms(values.rooms as List)
-                .createdAt(values.createdAt as LocalDateTime)
-                .updatedAt(values.updatedAt as LocalDateTime)
+                .createdAt(values.createdAt as Instant)
+                .updatedAt(values.updatedAt as Instant)
                 .build()
     }
 }

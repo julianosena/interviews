@@ -10,10 +10,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode( of = {"id"})
+@EqualsAndHashCode( of = {"roomId", "bookingId"})
 public class UpdatableRoomBookingProperties {
 
-    private UUID id;
+    private UUID roomId;
+    private UUID bookingId;
     private String guestName;
     private String guestEmail;
 

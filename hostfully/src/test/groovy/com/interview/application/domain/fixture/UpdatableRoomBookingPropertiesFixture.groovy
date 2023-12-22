@@ -14,7 +14,7 @@ class UpdatableRoomBookingPropertiesFixture {
         def values = defaultValues + parameters
 
         return UpdatableRoomBookingProperties.builder()
-            .id(values.id as UUID)
+            .roomId(values.id as UUID)
             .guestName(values.guestName as String)
             .guestEmail(values.guestEmail as String)
             .build()

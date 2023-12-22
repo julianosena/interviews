@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -17,9 +17,7 @@ public class Booker {
     private String lastName;
     private String email;
     private Address address;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-
+    private Instant createdAt;
+    private Instant updatedAt;
 
 }

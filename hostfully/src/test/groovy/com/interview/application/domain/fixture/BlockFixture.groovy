@@ -2,8 +2,8 @@ package com.interview.application.domain.fixture
 
 import com.interview.application.domain.Block
 
+import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 class BlockFixture {
 
@@ -12,8 +12,8 @@ class BlockFixture {
                 id : UUID.randomUUID(),
                 start : LocalDate.now(),
                 end : LocalDate.now().plusMonths(1),
-                createdAt : LocalDateTime.now(),
-                updatedAt : LocalDateTime.now()
+                createdAt : Instant.now(),
+                updatedAt : Instant.now()
         ]
         def values = defaultValues + parameters
 

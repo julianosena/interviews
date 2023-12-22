@@ -1,7 +1,7 @@
 package com.interview.application.usecase;
 
 import com.interview.application.domain.Room;
-import com.interview.application.gateway.FindRoomByIdGateway;
+import com.interview.application.gateway.FindRoomByIdsGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +13,10 @@ import java.util.function.Predicate;
 @RequiredArgsConstructor
 public class FindRoomsByIdsUseCase {
 
-    private final FindRoomByIdGateway findRoomByIdGateway;
+    private final FindRoomByIdsGateway findRoomByIdsGateway;
 
     public List<Room> execute(final List<UUID> ids){
-        return findRoomByIdGateway.execute(ids);
+        return findRoomByIdsGateway.execute(ids);
     }
 
     public List<Room> execute(final List<UUID> ids, final Predicate<Room> predicate){

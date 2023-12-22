@@ -2,7 +2,6 @@ package com.interview.application.gateway.database.h2.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +13,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "room_attributes")
+@Table(name = "ROOM_ATTRIBUTE")
 public class RoomAttributeH2 {
 
     @Id
@@ -25,6 +24,6 @@ public class RoomAttributeH2 {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "attributes")
+    @ManyToMany(mappedBy = "attributes", fetch = FetchType.LAZY)
     private List<RoomH2> rooms;
 }

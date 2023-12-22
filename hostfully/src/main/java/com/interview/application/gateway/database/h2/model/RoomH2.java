@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.UuidGenerator;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,11 +24,11 @@ public class RoomH2 {
     @Column(name = "room_id")
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "hotel_id")
     private HotelH2 hotel;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "room_type_id")
     private RoomTypeH2 type;
 
@@ -42,10 +41,10 @@ public class RoomH2 {
     @Column(name = "max_occupancy")
     private Long maxOccupancy;
 
-    @Column(name = "available")
+    @Column(name = "is_available")
     private boolean available;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "room_room_attribute",
         joinColumns = {@JoinColumn(name = "room_id")},
@@ -53,11 +52,14 @@ public class RoomH2 {
     )
     private List<RoomAttributeH2> attributes;
 
+    @OneToMany(mappedBy = "room")
+    private List<RoomBookingH2> roomBookings;
+
     @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 }
