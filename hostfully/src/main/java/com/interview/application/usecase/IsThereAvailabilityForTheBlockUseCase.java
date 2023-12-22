@@ -3,6 +3,7 @@ package com.interview.application.usecase;
 import com.interview.application.domain.Block;
 import com.interview.application.domain.Range;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 

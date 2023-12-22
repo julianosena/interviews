@@ -23,6 +23,8 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleException(final Exception e) {
+        log.error("Unexpected error", e);
+
         ErrorResponse response = new ErrorResponse();
         response.setMessage("Unexpected error, contact the administrator");
         return response;
@@ -32,6 +34,7 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleNotFoundRestApiResourceException(final MethodArgumentNotValidException e) {
+        log.error("Invalid request", e);
 
         ErrorResponse response = new ErrorResponse();
         response.setMessage("Invalid request");
@@ -56,6 +59,8 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleIllegalArgumentException(final IllegalArgumentException e) {
+        log.error("Illegal argument", e);
+
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;
@@ -64,6 +69,8 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({UseCaseException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleUseCaseException(final UseCaseException e) {
+        log.error("Use case problem", e);
+
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;
@@ -72,14 +79,18 @@ public class RestApiExceptionHandler {
     @ExceptionHandler({BusinessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBusinessException(final BusinessException e) {
+        log.error("Domain problem", e);
+
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;
     }
 
     @ExceptionHandler({NotFoundRestApiResourceException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundRestApiResourceException(final NotFoundRestApiResourceException e) {
+        log.error("Not found exception", e);
+
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return response;
