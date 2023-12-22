@@ -133,3 +133,13 @@ If You would like to know more about Clean Architecture, [click here](https://bl
 * Database H2 in memory
 * Liquibase for changelogs 
 * Maven dependency managment
+
+### FYI
+
+I couldn't finish all the tests, because I had no time this accomplishment, I used TDD, that's why I covered the most of my use cases, unfortunately for the controllers due the simplicity, I created without TDD.
+I know the importance of the test, and if I had more time I would do it for sure.
+
+My approach is to cover only controllers and use case layer, I can guarantee with that my rules and apis are functional with no doubts.
+I used to do end-to-end test to cover the integration tests and user experience. Using cypress, but, unfortunatelly I had no time as well.
+
+We can discuss further, about the mentioned approaches above. Thanks
