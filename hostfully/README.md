@@ -4,7 +4,9 @@
 
 You can within a booking, book more than one room for the same book.
 You can only book a rooms that are available 'IS_AVAILABLE=TRUE'. I've created it because It is recommended when you as a manager would like to unable that specific room for any reasons.
-It also validates if the total amount of guests is supported by rooms
+It also validates if the total amount of guests is supported by rooms.
+
+I've created a status flow and process, but, you are able just to cancel the booking, not pay, refund and etc. It is just to show, we have to consider it within a real booking project 
 
 All of others rules to book are implements as mentioned in the requirements of this challenge.
 
@@ -35,11 +37,20 @@ You will see the form below: <br /><br />
 
 than, on the righ side text field as the image below the command
 ```sql
-SELECT * FROM ROOM
+SELECT R.ROOM_ID,
+       RT.NAME,
+       RT.DESCRIPTION,
+       RT.RATE_ADULT,
+       RT.RATE_CHILDREN,
+       R.MAX_OCCUPANCY,
+       R.IS_AVAILABLE
+FROM ROOM R,
+     ROOM_TYPE RT
+WHERE R.ROOM_TYPE_ID = RT.ROOM_TYPE_ID
 ```
 ![img.png](documentation/img/h2-console.png)
 
-Choose one or more ids of the rooms to send afterward within booking request.
+The result of the SQL command will show you the rooms in the system. You will see, the properties of the rooms, max occupancy and etc. Keep it open because you will need during your tests.
 
 ### API Documentation
 
@@ -53,8 +64,6 @@ This API provides endpoints to perform CRUD operations on blocks.
 
 | Method | Endpoint                   | Description                 |
 |--------|----------------------------|-----------------------------|
-| GET    | `/blocks`                  | Retrieve all blocks         |
-| GET    | `/blocks/{blockId}`        | Retrieve a specific block   |
 | POST   | `/blocks`                  | Create a new block          |
 | PUT    | `/blocks/{blockId}`        | Update a specific block     |
 | DELETE | `/blocks/{blockId}`        | Delete a specific block     |
