@@ -2,18 +2,20 @@ package com.interview.application.usecase;
 
 import com.interview.application.domain.Block;
 import com.interview.application.domain.Range;
+import com.interview.application.gateway.FindBlocksByRangeGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class FindBlocksByRoomIdsAndRangeUseCase {
 
+    private final FindBlocksByRangeGateway findBlocksByRangeGateway;
+
     public List<Block> execute(Range range){
-        return Collections.emptyList();
+        return findBlocksByRangeGateway.execute(range.getStart(), range.getEnd());
     }
 
 }
