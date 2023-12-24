@@ -1,7 +1,7 @@
 package com.interview.application.gateway.database.h2;
 
 import com.interview.application.domain.Room;
-import com.interview.application.gateway.FindRoomByIdsGateway;
+import com.interview.application.gateway.FindRoomsByIdsGateway;
 import com.interview.application.gateway.database.h2.model.RoomH2;
 import com.interview.application.gateway.database.h2.model.mapper.RoomH2Mapper;
 import jakarta.persistence.EntityManager;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class FindRoomByIdsH2Gateway implements FindRoomByIdsGateway {
+public class FindRoomsByIdsH2Gateway implements FindRoomsByIdsGateway {
 
     private final EntityManager em;
 

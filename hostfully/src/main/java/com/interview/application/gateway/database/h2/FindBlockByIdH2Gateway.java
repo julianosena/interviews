@@ -5,7 +5,6 @@ import com.interview.application.gateway.FindBlockByIdGateway;
 import com.interview.application.gateway.database.h2.model.mapper.BlockH2Mapper;
 import com.interview.application.gateway.database.h2.repository.BlockRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

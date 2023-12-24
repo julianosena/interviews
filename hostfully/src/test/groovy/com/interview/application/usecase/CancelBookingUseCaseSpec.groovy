@@ -4,7 +4,6 @@ import com.interview.application.domain.Booking
 import com.interview.application.domain.Hotel
 import com.interview.application.domain.exception.BusinessException
 import com.interview.application.domain.fixture.*
-import com.interview.application.gateway.CreateBookingGateway
 import com.interview.application.gateway.SaveBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification

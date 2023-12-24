@@ -2,20 +2,23 @@
 
 ### How was the system was develop.
 
-You can within a booking, book more than one room for the same book.
-You can only book a rooms that are available 'IS_AVAILABLE=TRUE'. I've created it because It is recommended when you as a manager would like to unable that specific room for any reasons.
-It also validates if the total amount of guests is supported by rooms.
+You are able to book more than one room for the same book.
+You can only book rooms that are available 'IS_AVAILABLE=TRUE.'
+I've created it because It is recommended when you as a manager 
+and would like to disable that specific room for any reasons.
+It also validates if the total number of guests is supported by rooms.
 
-I've created a status flow and process, but, you are able just to cancel the booking, not pay, refund and etc. It is just to show, we have to consider it within a real booking project 
-When you cancel and re-book, the system keep the history all bookings canceled and active, using linked list datastructures, where the nodes are previousBookin property. After re-booking action, you will be able to see the older booking there. 
+I've created a status flow and process, but you are able just to cancel the booking, not pay, refund etc. It is just to show, we have to consider it within a real booking project 
+When you cancel and re-book, the system keeps the history of all bookings canceled and active, using linked list datastructures, where the nodes are 'previousBookin' property.
+After re-booking action, you will be able to see the older booking there. 
 
-All others rules to book are implements as mentioned in the requirements of this challenge.
+All other rules to book are implemented as mentioned in the requirements of this challenge.
 
 ## Instructions to use
 
-This project has some random data in terms of, Hotel, Rooms and theirs relationships.
-I could create endpoints to retrieve those, but, It was not part of the challenge scope.
-I created one Hotel and its fifth rooms.
+This project creates some random data in terms of Hotel Rooms and their relationships when It is started.
+I created an endpoint to retrieve rooms, filtering by maxOccupancy and available parameters.
+You may use to get room id to make a booking.
 
 To book, you should follow the steps below:
 
@@ -24,38 +27,19 @@ Run on terminal the script below:
 ```shell
 sh application.sh
 ```
-than, click in this link right [here](http://localhost:8080/h2-console)
+Access the swagger to make requests clicking [here](http://localhost:8080/swagger-ui/index.html#/) then,
+access the API related to rooms, to get id to and afterward create a booking.
+You are able to filter the rooms collection, only my maxOccupancy or if It is available or not.
 
-You will see the form below: <br /><br />
-![img.png](documentation/img/H2-form-login.png)
+## Room Management API
 
-### Fill it with the values below
+This API provides endpoints to perform read operations on rooms.
 
-| Fields      | Value                  |
-|-------------|------------------------|
-| `JDBC URL`  | jdbc:h2:mem:hostfully  |
-| `User Name` | sa                     |
+### Endpoints
 
-than, on the righ side text field as the image below the command
-```sql
-SELECT R.ROOM_ID,
-       RT.NAME,
-       RT.DESCRIPTION,
-       RT.RATE_ADULT,
-       RT.RATE_CHILDREN,
-       R.MAX_OCCUPANCY,
-       R.IS_AVAILABLE
-FROM ROOM R,
-     ROOM_TYPE RT
-WHERE R.ROOM_TYPE_ID = RT.ROOM_TYPE_ID
-```
-![img.png](documentation/img/h2-console.png)
-
-The result of the SQL command will show you the rooms in the system. You will see, the properties of the rooms, max occupancy and etc. Keep it open because you will need during your tests.
-
-### API Documentation
-
-Access the swagger to make requests clicking [here](http://localhost:8080/swagger-ui/index.html#/)
+| Method | Endpoint                   | Description                                                     |
+|--------|----------------------------|-----------------------------------------------------------------|
+| GET    | `/blocks/{blockId}`        | Get Rooms by not required maxOccupancy and available parameters |
 
 ## Block Management API
 
@@ -143,10 +127,10 @@ ROOM_TYPE_RATE - It is an idea to use (I couldn't do this, because of time) to h
 
 ### FYI
 
-I couldn't finish all the tests, because I had no time this accomplishment, I used TDD, that's why I covered the most of my use cases, unfortunately for the controllers due the simplicity, I created without TDD.
-I know the importance of the test, and if I had more time I would do it for sure.
+I couldn't finish all the tests, because I had no time for this accomplishment, I used TDD, that's why I covered the most of my use cases, unfortunately for the controllers due the simplicity, I created without TDD.
+I know the importance of the test, and if I had more time, I would do it for sure.
 
-My approach is to cover only controllers and use case layer, I can guarantee with that my rules and apis are functional with no doubts.
+My approach is to cover only controllers and use case layer; I can guarantee with that my rules and apis are functional with no doubts.
 I used to do end-to-end test to cover the integration tests and user experience. Using cypress, but, unfortunatelly I had no time as well.
 
-We can discuss further, about the mentioned approaches above. Thanks
+We can discuss further the mentioned approaches above. Thanks

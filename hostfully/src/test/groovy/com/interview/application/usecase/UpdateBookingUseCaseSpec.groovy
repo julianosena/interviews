@@ -4,7 +4,6 @@ import com.interview.application.domain.Booking
 import com.interview.application.domain.Hotel
 import com.interview.application.domain.UpdatableBookingProperties
 import com.interview.application.domain.fixture.*
-import com.interview.application.gateway.CreateBookingGateway
 import com.interview.application.gateway.SaveBookingGateway
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
@@ -13,7 +12,6 @@ import java.time.LocalDate
 
 import static com.interview.application.domain.Booking.Status.PAID
 import static com.interview.application.domain.Booking.Status.PENDING
-
 
 class UpdateBookingUseCaseSpec extends Specification {
 

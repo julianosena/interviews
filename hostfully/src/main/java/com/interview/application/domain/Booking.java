@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,6 +51,17 @@ public class Booking {
         } else {
             throw new BusinessException("You are allowed to cancel only pending or paid bookings");
         }
+    }
+
+    public void calculate(){
+        BigDecimal result = this.roomBookings.stream().map(roomBooking -> {
+            BigDecimal adultsRate = roomBooking.getRoom().getType().getRateAdult().multiply(new BigDecimal(this.numberOfAdults));
+            BigDecimal childrenRate = roomBooking.getRoom().getType().getRateChildren().multiply(new BigDecimal(this.numberOfChildren));
+            return adultsRate.add(childrenRate);
+        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal amountOfDaysToStay = new BigDecimal(ChronoUnit.DAYS.between(this.checkinDate, this.checkoutDate));
+        this.totalAmount = result.multiply(amountOfDaysToStay);
     }
 
     public enum Status {

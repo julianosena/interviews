@@ -21,6 +21,8 @@ class BlockFixture {
             .id(values.id as UUID)
             .start(values.start as LocalDate)
             .end(values.end as LocalDate)
+            .createdAt(values.createdAt as Instant)
+            .updatedAt(values.updatedAt as Instant)
             .build()
     }
 }
