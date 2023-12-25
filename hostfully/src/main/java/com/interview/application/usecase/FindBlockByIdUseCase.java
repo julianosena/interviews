@@ -14,7 +14,7 @@ public class FindBlockByIdUseCase {
 
     private final FindBlockByIdGateway findBlockByIdGateway;
 
-    public Optional<Block> execute(UUID id){
+    public Optional<Block> execute(final UUID id){
         return findBlockByIdGateway.execute(id);
     }
 

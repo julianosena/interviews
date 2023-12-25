@@ -22,7 +22,7 @@ public class UpdateBlockController {
     private final BlockApiModelMapper mapper;
 
     @PutMapping("/{id}")
-    public BlockApiModel execute(@PathVariable("id") UUID id, @Valid @RequestBody UpdateBlockApiRequest request){
+    public BlockApiModel execute(@PathVariable("id") final UUID id, @Valid @RequestBody final UpdateBlockApiRequest request){
         final Block block = mapper.map(id, request);
         final Block updated = this.useCase.execute(block);
         return mapper.map(updated);

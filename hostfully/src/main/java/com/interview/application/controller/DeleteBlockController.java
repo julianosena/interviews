@@ -18,7 +18,7 @@ public class DeleteBlockController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void execute(@PathVariable("id") UUID id){
+    public void execute(@PathVariable("id") final UUID id){
         useCase.execute(id);
     }
 }

@@ -82,9 +82,8 @@ class CreateBlockUseCaseSpec extends Specification {
         and: "save block process should not be called"
         0 * saveBlockGateway.execute(block)
 
-        and : "returned block must not be null"
-        def e = thrown(IllegalArgumentException)
         and : "exception should not be null"
+        def e = thrown(IllegalArgumentException)
         null != e
         and : "its message should be the expected"
         e.message == "You must not inform the id to create a block"

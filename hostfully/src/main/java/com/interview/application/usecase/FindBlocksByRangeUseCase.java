@@ -14,7 +14,7 @@ public class FindBlocksByRangeUseCase {
 
     private final FindBlocksByRangeGateway findBlocksByRangeGateway;
 
-    public List<Block> execute(Range range){
+    public List<Block> execute(final Range range){
         return findBlocksByRangeGateway.execute(range.getStart(), range.getEnd());
     }
 

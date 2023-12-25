@@ -28,7 +28,7 @@ public class GetRoomsFilterController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<RoomApiModel> execute(RoomQueryParameters parameters){
+    public List<RoomApiModel> execute(final RoomQueryParameters parameters){
         RoomFilter filter = roomQueryParametersMapper.map(parameters);
         return useCase.execute(filter).stream().map(roomApiModelMapper::map).toList();
     }

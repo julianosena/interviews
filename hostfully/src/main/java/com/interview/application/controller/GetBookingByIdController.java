@@ -22,7 +22,7 @@ public class GetBookingByIdController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingApiModel execute(@PathVariable("id") UUID id){
+    public BookingApiModel execute(@PathVariable("id") final UUID id){
         return useCase.execute(id).map(mapper::map)
                 .orElseThrow(() -> new NotFoundRestApiResourceException("There is no booking for the given id"));
     }

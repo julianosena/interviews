@@ -15,7 +15,7 @@ public class FindBookingsByRoomIdsAndRangeUseCase {
 
     private final FindBookingByRoomIdsAndRangeGateway findBookingByRoomIdsAndRangeGateway;
 
-    public List<Booking> execute(List<UUID> ids, LocalDate checkinDate, LocalDate checkoutDate){
+    public List<Booking> execute(final List<UUID> ids, final LocalDate checkinDate, final LocalDate checkoutDate){
         return findBookingByRoomIdsAndRangeGateway.execute(ids, checkinDate, checkoutDate);
     }
 

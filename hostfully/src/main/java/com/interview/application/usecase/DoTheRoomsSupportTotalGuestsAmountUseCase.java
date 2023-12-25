@@ -16,7 +16,7 @@ public class DoTheRoomsSupportTotalGuestsAmountUseCase {
 
     private final FindRoomsByIdsUseCase findRoomsByIdsUseCase;
 
-    public boolean execute(Booking booking){
+    public boolean execute(final Booking booking){
         List<UUID> roomIds = booking.getRoomBookings().stream().map(RoomBooking::getRoom).map(Room::getId).toList();
         List<Room> rooms = findRoomsByIdsUseCase.execute(roomIds, Room::isAvailable);
 

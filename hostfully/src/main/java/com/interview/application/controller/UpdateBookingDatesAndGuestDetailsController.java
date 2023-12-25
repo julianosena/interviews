@@ -27,7 +27,7 @@ public class UpdateBookingDatesAndGuestDetailsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingApiModel execute(@PathVariable("id")UUID id, @RequestBody@Valid final UpdatableBookingPropertiesRequest request){
+    public BookingApiModel execute(@PathVariable("id") final UUID id, @RequestBody@Valid final UpdatableBookingPropertiesRequest request){
         UpdatableBookingProperties updatableBookingProperties = updatableBookingPropertiesRequestMapper.map(request);
         Booking booking = useCase.execute(id, updatableBookingProperties);
         return bookingApiModelMapper.map(booking);

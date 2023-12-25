@@ -22,7 +22,7 @@ public class ReBookCanceledBookingController {
 
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingApiModel execute(@PathVariable("id") UUID id){
+    public BookingApiModel execute(@PathVariable("id") final UUID id){
         Booking booking = useCase.execute(id);
         return mapper.map(booking);
     }
