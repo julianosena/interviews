@@ -14,7 +14,7 @@ import java.util.UUID;
 public class DeleteBookingUseCase {
 
     private final FindBookingByIdUseCase findBookingByIdUseCase;
-    private final DoesTheBookingHasParentBookingUseCase doesTheBookingHasParentBookingUseCase;
+    private final DoesTheBookingHaveParentBookingUseCase doesTheBookingHaveParentBookingUseCase;
     private final DeleteBookingGateway deleteBookingGateway;
 
     public void execute(final UUID id){
@@ -23,7 +23,7 @@ public class DeleteBookingUseCase {
         Booking booking = this.findBookingByIdUseCase.execute(id)
                 .orElseThrow(() -> new UseCaseException("You can not delete a non existent booking"));
 
-        if(doesTheBookingHasParentBookingUseCase.execute(booking))
+        if(doesTheBookingHaveParentBookingUseCase.execute(booking))
             throw new UseCaseException("You can not delete a canceled booking that belongs to another one, probably, It was canceled and re-booked");
 
         deleteBookingGateway.execute(booking);

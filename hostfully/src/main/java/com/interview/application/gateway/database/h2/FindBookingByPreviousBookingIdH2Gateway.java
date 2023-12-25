@@ -1,7 +1,7 @@
 package com.interview.application.gateway.database.h2;
 
 import com.interview.application.domain.Booking;
-import com.interview.application.gateway.FindBookingByPreviousBookingGateway;
+import com.interview.application.gateway.FindBookingByPreviousBookingIdGateway;
 import com.interview.application.gateway.database.h2.model.BookingH2;
 import com.interview.application.gateway.database.h2.model.translator.BookingH2ToBookingTranslator;
 import jakarta.persistence.EntityManager;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FindBookingByPreviousBookingH2Gateway implements FindBookingByPreviousBookingGateway {
+public class FindBookingByPreviousBookingIdH2Gateway implements FindBookingByPreviousBookingIdGateway {
 
     private final EntityManager em;
 

@@ -220,7 +220,7 @@ class CreateBookingUseCaseSpec extends Specification {
                 booking.getCheckinDate() + " up to " + booking.getCheckoutDate()
     }
 
-    def "It should throw an exception because the selected room does not support"(){
+    def "It should throw an exception because the selected room does not support total number of guests"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
@@ -264,13 +264,11 @@ class CreateBookingUseCaseSpec extends Specification {
 
         and : "do the rooms support total guests amount process should be called and return true"
         1 * doTheRoomsSupportTotalGuestsAmountUseCase.execute(booking) >> {
-            true
-        }
-
-        and : "checking availability process should return that there is availability for this booking"
-        1 * isThereAvailabilityForTheBookingUseCase.execute(booking) >> {
             false
         }
+
+        and : "checking availability process should not be called"
+        0 * isThereAvailabilityForTheBookingUseCase.execute(booking)
 
         and : "the process of creation booking should not be executed"
         0 * this.createBookingGateway.execute(booking)
@@ -280,7 +278,6 @@ class CreateBookingUseCaseSpec extends Specification {
         and : "exception should not be null"
         null != e
         and : "its message should be the expected"
-        e.message == "There is no availability for the selected rooms within the given period " +
-                booking.getCheckinDate() + " up to " + booking.getCheckoutDate()
+        e.message == "The selected rooms dont support the total amount of guests " + booking.getTotalAmountOfGuests()
     }
 }

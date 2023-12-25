@@ -1,21 +1,20 @@
 package com.interview.application.usecase
 
 import com.interview.application.domain.Hotel
-import com.interview.application.domain.Room
 import com.interview.application.domain.fixture.*
-import com.interview.application.gateway.FindRoomsByIdsGateway
+import com.interview.application.gateway.FindBookingByPreviousBookingIdGateway
 import spock.lang.Specification
 
 import java.time.LocalDate
 
 import static com.interview.application.domain.Booking.Status.PENDING
 
-class FindRoomsByIdsUseCaseSpec extends Specification {
+class DoesTheBookingHaveParentBookingUseCaseSpec extends Specification {
 
-    def findRoomsByIdsGateway = Mock(FindRoomsByIdsGateway)
-    def findRoomsByIdsUseCase = new FindRoomsByIdsUseCase(findRoomsByIdsGateway)
+    def findBookingByPreviousBookingIdGateway = Mock(FindBookingByPreviousBookingIdGateway)
+    def doesTheBookingHaveParentBookingUseCase = new DoesTheBookingHaveParentBookingUseCase(findBookingByPreviousBookingIdGateway)
 
-    def "It should return true, because the chosen room supports the total number of guests within the booking"(){
+    def "It should return true, because the booking was canceled and re-booked with success"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
@@ -48,24 +47,20 @@ class FindRoomsByIdsUseCaseSpec extends Specification {
                 booking : booking
         )
         booking.roomBookings.add(roomBooking)
-        def roomIds = rooms.stream().map(Room::getId).toList()
 
         when : "use case is called"
-        def foundRooms = findRoomsByIdsUseCase.execute(roomIds)
+        boolean result = doesTheBookingHaveParentBookingUseCase.execute(booking)
 
-        then : "find given rooms within the booking process, should be called and return the room(s)"
-        findRoomsByIdsGateway.execute(_ as List) >> {
-            RoomFixture.list(hotel)
+        then : "find booking by previous booking process should return a canceled booking"
+        findBookingByPreviousBookingIdGateway.execute(booking.id) >> {
+            Optional.of(BookingFixture.create())
         }
 
-        and: "the result should not be null"
-        null != foundRooms
-
-        and : "not empty"
-        !foundRooms.isEmpty()
+        and: "the result should be true, because the booking was canceled and re-booked"
+        result
     }
 
-    def "It should throw an exception because there are not rooms for the given ones"(){
+    def "It should return false, because the booking was not canceled and re-booked"(){
         given: "Valid and existent hotel"
         Hotel hotel = HotelFixture.create()
         and : "its rooms."
@@ -98,23 +93,16 @@ class FindRoomsByIdsUseCaseSpec extends Specification {
                 booking : booking
         )
         booking.roomBookings.add(roomBooking)
-        def roomIds = rooms.stream().map(Room::getId).toList()
 
         when : "use case is called"
-        List<Room> foundRooms = findRoomsByIdsUseCase.execute(roomIds, Room::isAvailable)
+        boolean result = doesTheBookingHaveParentBookingUseCase.execute(booking)
 
-        then : "find given rooms within the booking process, should be called and return the room(s)"
-        findRoomsByIdsGateway.execute(_ as List) >> {
-            RoomFixture.list(hotel)
+        then : "find booking by previous booking process should return nothing"
+        findBookingByPreviousBookingIdGateway.execute(booking.id) >> {
+            Optional.empty()
         }
 
-        and: "the result should not be null"
-        null != foundRooms
-
-        and : "not empty"
-        !foundRooms.isEmpty()
-
-        and : "the rooms should be available"
-        foundRooms*.available.every { it }
+        and: "the result should be false, because the booking was not canceled and re-booked"
+        !result
     }
 }

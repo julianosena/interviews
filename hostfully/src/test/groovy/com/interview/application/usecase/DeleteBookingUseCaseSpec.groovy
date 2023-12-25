@@ -9,7 +9,7 @@ import spock.lang.Specification
 class DeleteBookingUseCaseSpec extends Specification {
 
     def findBookingByIdUseCase = Mock(FindBookingByIdUseCase)
-    def doesTheBookingHasParentBookingUseCase = Mock(DoesTheBookingHasParentBookingUseCase)
+    def doesTheBookingHasParentBookingUseCase = Mock(DoesTheBookingHaveParentBookingUseCase)
     def deleteBookingGateway = Mock(DeleteBookingGateway)
     def useCase = new DeleteBookingUseCase(findBookingByIdUseCase, doesTheBookingHasParentBookingUseCase, deleteBookingGateway)
 
@@ -82,5 +82,32 @@ class DeleteBookingUseCaseSpec extends Specification {
 
         and : "message of the exception should be the expected"
         e.message == "You can not delete a non existent booking"
+    }
+
+    def "It should throw an exception telling it cant be deleted because It belongs a history of cancellation and re-booking process"(){
+        given: "valid and existent booking"
+        def booking = BookingFixture.create([id: UUID.randomUUID() ])
+
+        when : "use case is called"
+        useCase.execute(booking.id)
+
+        then : "find booking by id process should return an existent one"
+        1 * findBookingByIdUseCase.execute(booking.id) >> {
+            Optional.of(booking)
+        }
+
+        and : "does the booking has parent process should be called and return true"
+        doesTheBookingHasParentBookingUseCase.execute(booking) >> {
+            true
+        }
+
+        and : "the process of cancellation booking should not be called"
+        0 * deleteBookingGateway.execute(_ as Booking)
+
+        then : "should throw an exception telling that it cant be deleted because It belongs a history of cancellation and re-booking process"
+        def e = thrown(UseCaseException)
+
+        and : "message of the exception should be the expected"
+        e.message == "You can not delete a canceled booking that belongs to another one, probably, It was canceled and re-booked"
     }
 }

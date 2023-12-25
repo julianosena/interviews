@@ -11,11 +11,15 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public class UpdateBlockUseCase {
 
+    private final FindBlockByIdUseCase findBlockByIdUseCase;
     private final IsThereAvailabilityForTheBlockUseCase isThereAvailabilityForTheBlockUseCase;
     private final SaveBlockGateway saveBlockGateway;
 
     public Block execute(final Block block){
         Assert.notNull(block.getId(), "You must inform the id to update a block");
+
+        this.findBlockByIdUseCase.execute(block.getId())
+                .orElseThrow(() -> new UseCaseException("You can not update a non existent block"));
 
         if(isThereAvailabilityForTheBlockUseCase.execute(block)){
             return saveBlockGateway.execute(block);

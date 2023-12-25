@@ -17,5 +17,4 @@ public class FindBookingByIdUseCase {
     public Optional<Booking> execute(final UUID id){
         return findBookingByIdGateway.execute(id);
     }
-
 }
