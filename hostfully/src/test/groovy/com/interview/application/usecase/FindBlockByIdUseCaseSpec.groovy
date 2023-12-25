@@ -17,7 +17,7 @@ class FindBlockByIdUseCaseSpec extends Specification {
         def optional = findBlockByIdUseCase.execute(block.id)
 
         then: "find block process should be called once and return a valid existent block"
-        1 * findBlockByIdUseCase.execute(block.id) >> {
+        1 * findBlockByIdGateway.execute(block.id) >> {
             Optional.of(block)
         }
 
