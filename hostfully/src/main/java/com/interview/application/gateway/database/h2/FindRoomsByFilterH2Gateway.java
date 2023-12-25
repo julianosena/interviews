@@ -34,8 +34,8 @@ public class FindRoomsByFilterH2Gateway implements FindRoomsByFilterGateway {
             predicates.add(predicate);
         }
 
-        if(null != filter.getIsAvailable()){
-            Predicate predicate = criteriaBuilder.equal(root.get("available"), filter.getIsAvailable());
+        if(null != filter.getAvailable()){
+            Predicate predicate = criteriaBuilder.equal(root.get("available"), filter.getAvailable());
             predicates.add(predicate);
         }
 

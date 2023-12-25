@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class RoomFilter {
 
-    private Boolean isAvailable;
+    private Boolean available;
     private Integer maxOccupancy;
 
 }

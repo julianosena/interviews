@@ -107,6 +107,6 @@ class DoTheRoomsSupportTotalGuestsAmountUseCaseSpec extends Specification {
         def e = thrown(UseCaseException)
 
         and : "its message as well"
-        e.message == "The selected rooms don't exist, check your solicitation and try again"
+        e.message == "The selected rooms don't exist, or they are not available, check your solicitation and try again"
     }
 }

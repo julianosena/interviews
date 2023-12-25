@@ -20,7 +20,7 @@ public class DoTheRoomsSupportTotalGuestsAmountUseCase {
         List<UUID> roomIds = booking.getRoomBookings().stream().map(RoomBooking::getRoom).map(Room::getId).toList();
         List<Room> rooms = findRoomsByIdsUseCase.execute(roomIds, Room::isAvailable);
 
-        if(rooms.isEmpty()) throw new UseCaseException("The selected rooms don't exist, check your solicitation and try again");
+        if(rooms.isEmpty()) throw new UseCaseException("The selected rooms don't exist, or they are not available, check your solicitation and try again");
 
         long totalAmountOfGuests = booking.getTotalAmountOfGuests();
         long totalAmountOfOccupancy = rooms.stream().mapToLong(Room::getMaxOccupancy).sum();

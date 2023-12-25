@@ -18,7 +18,7 @@ class FindRoomsByFilterUseCaseSpec extends Specification {
         and: "Valid filter"
         def filter = RoomFilter.builder()
             .maxOccupancy(2)
-            .isAvailable(true)
+            .available(true)
             .build()
 
         when: "use case is called"
