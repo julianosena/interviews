@@ -123,14 +123,4 @@ If You would like to know more about Clean Architecture, [click here](https://bl
 
 ![img_1.png](documentation/img/database.png)
 
-ROOM_TYPE_RATE - It is an idea to use (I couldn't do this, because of time) to hike prices or make seasonal promotions, like Christmas and etc.
-
-### FYI
-
-I couldn't finish all the tests, because I had no time for this accomplishment, I used TDD, that's why I covered the most of my use cases, unfortunately for the controllers due the simplicity, I created without TDD.
-I know the importance of the test, and if I had more time, I would do it for sure.
-
-My approach is to cover only controllers and use case layer; I can guarantee with that my rules and apis are functional with no doubts.
-I used to do end-to-end test to cover the integration tests and user experience. Using cypress, but, unfortunatelly I had no time as well.
-
-We can discuss further the mentioned approaches above. Thanks
+ROOM_TYPE_RATE - It is an idea to use (I couldn't do this, because of time) to hike prices or make seasonal promotions, like Christmas etc.
