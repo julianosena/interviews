@@ -6,7 +6,7 @@ import java.time.Instant
 
 class HotelFixture {
 
-    static def create(def parameters = [:]) {
+    static Hotel create(def parameters = [:]) {
         def defaultValues = [
                 id : UUID.randomUUID(),
                 name : "Z Hotel of London",

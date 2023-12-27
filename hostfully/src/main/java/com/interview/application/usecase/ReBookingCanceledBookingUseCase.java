@@ -4,6 +4,7 @@ import com.interview.application.domain.Booking;
 import com.interview.application.domain.RoomBooking;
 import com.interview.application.domain.mapper.ReCreateBookingMapper;
 import com.interview.application.domain.mapper.ReCreateRoomBookingMapper;
+import com.interview.application.usecase.exception.NotFoundUseCaseException;
 import com.interview.application.usecase.exception.UseCaseException;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -26,7 +27,7 @@ public class ReBookingCanceledBookingUseCase {
         Assert.notNull(id, "You must inform the id for re-booking process");
 
         final Booking booking = this.findBookingByIdUseCase.execute(id)
-                .orElseThrow(() -> new UseCaseException("You can not re-book a non existent canceled booking"));
+                .orElseThrow(() -> new NotFoundUseCaseException("You can not re-book a non existent canceled booking"));
 
         if(booking.getStatus() != CANCELED) throw new UseCaseException("You can not re-book a non-canceled booking");
 

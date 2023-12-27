@@ -3,6 +3,7 @@ package com.interview.application.usecase
 import com.interview.application.domain.Booking
 import com.interview.application.domain.Hotel
 import com.interview.application.domain.fixture.*
+import com.interview.application.usecase.exception.NotFoundUseCaseException
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
@@ -127,7 +128,7 @@ class ReBookingCanceledBookingUseCaseSpec extends Specification {
         0 * createBookingUseCase.execute(_ as Booking)
 
         and : "throw an exception telling there is no booking with given id"
-        def e = thrown(UseCaseException)
+        def e = thrown(NotFoundUseCaseException)
         e.message == "You can not re-book a non existent canceled booking"
     }
 

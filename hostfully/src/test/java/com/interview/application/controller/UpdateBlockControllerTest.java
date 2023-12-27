@@ -1,11 +1,12 @@
 package com.interview.application.controller;
 
-import com.interview.application.api.model.fixture.CreateBlockApiRequestFixture;
+import com.interview.application.api.model.fixture.UpdateBlockApiRequestFixture;
 import com.interview.application.api.model.fixture.mapper.HttpBodyMapper;
-import com.interview.application.controller.api.model.request.CreateBlockApiRequest;
+import com.interview.application.controller.api.model.request.UpdateBlockApiRequest;
 import com.interview.application.domain.Block;
 import com.interview.application.domain.fixture.BlockFixture;
-import com.interview.application.usecase.CreateBlockUseCase;
+import com.interview.application.usecase.UpdateBlockUseCase;
+import com.interview.application.usecase.exception.NotFoundUseCaseException;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,40 +19,42 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CreateBlockController.class)
+@WebMvcTest(UpdateBlockController.class)
 @ComponentScan(basePackages = {"com.interview.application.controller.api.model.mapper"})
-public class CreateBlockControllerTest {
+public class UpdateBlockControllerTest {
 
     @Autowired private MockMvc mvc;
-    @MockBean private CreateBlockUseCase createBlockUseCase;
+    @MockBean private UpdateBlockUseCase updateBlockUseCase;
 
     @Test
     @SneakyThrows
-    @DisplayName("It should creates a block with success")
-    public void shouldCreatesBlockWithSuccess() {
+    @DisplayName("It should update a block with success")
+    public void shouldUpdateBlockWithSuccess() {
         //Given
+        UUID id = UUID.randomUUID();
         Block block = BlockFixture.create();
-        CreateBlockApiRequest request = CreateBlockApiRequestFixture.create(new HashMap<>());
-        HttpBodyMapper<CreateBlockApiRequest> httpBodyMapper = new HttpBodyMapper<>();
+        UpdateBlockApiRequest request = UpdateBlockApiRequestFixture.create(new HashMap<>());
+        HttpBodyMapper<UpdateBlockApiRequest> httpBodyMapper = new HttpBodyMapper<>();
 
         //When
-        when(createBlockUseCase.execute(any(Block.class))).thenReturn(block);
+        when(updateBlockUseCase.execute(any(Block.class))).thenReturn(block);
 
         //Then
         mvc.perform(
                 MockMvcRequestBuilders
-                        .post("/blocks")
+                        .put("/blocks/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(httpBodyMapper.map(request))
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(block.getId().toString()))
                 .andExpect(jsonPath("$.start").value(block.getStart().toString()))
                 .andExpect(jsonPath("$.end").value(block.getEnd().toString()))
@@ -61,30 +64,26 @@ public class CreateBlockControllerTest {
     }
 
     @Test
-    @SneakyThrows
-    @DisplayName("It should validates all required properties to create block")
-    public void shouldValidatesAllRequiredPropertiesToCreateBlock() {
+    @DisplayName("It should return not found http bad request, because there is no block with given id")
+    public void shouldReturnNotFoundThereIsNoBlockWithGivenId() throws Exception {
         //Given
-        HashMap<Object, Object> parameters = new HashMap<>();
-        parameters.put("start", null);
-        parameters.put("end", null);
+        UUID id = UUID.randomUUID();
+        UpdateBlockApiRequest request = UpdateBlockApiRequestFixture.create(new HashMap<>());
+        HttpBodyMapper<UpdateBlockApiRequest> httpBodyMapper = new HttpBodyMapper<>();
 
         //When
-        CreateBlockApiRequest request = CreateBlockApiRequestFixture.create(parameters);
-        HttpBodyMapper<CreateBlockApiRequest> httpBodyMapper = new HttpBodyMapper<>();
+        when(updateBlockUseCase.execute(any(Block.class)))
+                .thenThrow(new NotFoundUseCaseException("You can not update a non existent block"));
 
         //Then
         mvc.perform(
-                        MockMvcRequestBuilders
-                                .post("/blocks")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(httpBodyMapper.map(request))
+                MockMvcRequestBuilders
+                        .put("/blocks/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(httpBodyMapper.map(request))
                 )
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").value("Invalid request"))
-                .andExpect(jsonPath("$.errors.start").value("must be informed"))
-                .andExpect(jsonPath("$.errors.end").value("must be informed"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("You can not update a non existent block"))
                 .andDo(print());
     }
 }

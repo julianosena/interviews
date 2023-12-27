@@ -1,8 +1,13 @@
 package com.interview.application.controller;
 
+import com.interview.application.api.model.fixture.UpdatableBookingPropertiesRequestFixture;
+import com.interview.application.api.model.fixture.mapper.HttpBodyMapper;
+import com.interview.application.controller.api.model.request.UpdatableBookingPropertiesRequest;
 import com.interview.application.domain.Booking;
+import com.interview.application.domain.UpdatableBookingProperties;
 import com.interview.application.domain.fixture.BookingFixture;
-import com.interview.application.usecase.FindBookingByIdUseCase;
+import com.interview.application.usecase.UpdateBookingUseCase;
+import com.interview.application.usecase.exception.NotFoundUseCaseException;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Optional;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -23,29 +28,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(GetBookingByIdController.class)
+@WebMvcTest(UpdateBookingDatesAndGuestDetailsController.class)
 @ComponentScan(basePackages = {"com.interview.application.controller.api.model.mapper"})
-public class GetBookingByIdControllerTest {
+public class UpdateBookingDatesAndGuestDetailsControllerTest {
 
     @Autowired private MockMvc mvc;
-    @MockBean private FindBookingByIdUseCase findBookingByIdUseCase;
+    @MockBean private UpdateBookingUseCase updateBookingUseCase;
 
     @Test
     @SneakyThrows
-    @DisplayName("It should get a booking by id with success")
-    public void shouldGetBookingByIdWithSuccess() {
+    @DisplayName("It should update a booking with success")
+    public void shouldUpdateBookingWithSuccess() {
         //Given
         UUID id = UUID.randomUUID();
         Booking booking = BookingFixture.create();
+        UpdatableBookingPropertiesRequest request = UpdatableBookingPropertiesRequestFixture.create(new HashMap<>());
+        HttpBodyMapper<UpdatableBookingPropertiesRequest> httpBodyMapper = new HttpBodyMapper<>();
 
         //When
-        when(findBookingByIdUseCase.execute(any(UUID.class))).thenReturn(Optional.of(booking));
+        when(updateBookingUseCase.execute(any(UUID.class), any(UpdatableBookingProperties.class))).thenReturn(booking);
 
         //Then
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/bookings/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .put("/bookings/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(httpBodyMapper.map(request))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(booking.getId().toString()))
                 .andExpect(jsonPath("$.booker").exists())
@@ -67,17 +76,22 @@ public class GetBookingByIdControllerTest {
     public void shouldReturnNotFoundThereIsNoBookingWithGivenId() throws Exception {
         //Given
         UUID id = UUID.randomUUID();
+        UpdatableBookingPropertiesRequest request = UpdatableBookingPropertiesRequestFixture.create(new HashMap<>());
+        HttpBodyMapper<UpdatableBookingPropertiesRequest> httpBodyMapper = new HttpBodyMapper<>();
 
         //When
-        when(findBookingByIdUseCase.execute(any(UUID.class))).thenReturn(Optional.empty());
+        when(updateBookingUseCase.execute(any(UUID.class), any(UpdatableBookingProperties.class)))
+                .thenThrow(new NotFoundUseCaseException("You can not update a non existent booking"));
 
         //Then
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/bookings/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .put("/bookings/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(httpBodyMapper.map(request))
+                )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("There is no booking with the given id"))
+                .andExpect(jsonPath("$.message").value("You can not update a non existent booking"))
                 .andDo(print());
     }
 }

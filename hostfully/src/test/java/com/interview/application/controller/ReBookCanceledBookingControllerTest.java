@@ -2,7 +2,8 @@ package com.interview.application.controller;
 
 import com.interview.application.domain.Booking;
 import com.interview.application.domain.fixture.BookingFixture;
-import com.interview.application.usecase.FindBookingByIdUseCase;
+import com.interview.application.usecase.ReBookingCanceledBookingUseCase;
+import com.interview.application.usecase.exception.NotFoundUseCaseException;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,40 +15,40 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(GetBookingByIdController.class)
+@WebMvcTest(ReBookCanceledBookingController.class)
 @ComponentScan(basePackages = {"com.interview.application.controller.api.model.mapper"})
-public class GetBookingByIdControllerTest {
+public class ReBookCanceledBookingControllerTest {
 
     @Autowired private MockMvc mvc;
-    @MockBean private FindBookingByIdUseCase findBookingByIdUseCase;
+    @MockBean private ReBookingCanceledBookingUseCase reBookingCanceledBookingUseCase;
 
     @Test
     @SneakyThrows
-    @DisplayName("It should get a booking by id with success")
-    public void shouldGetBookingByIdWithSuccess() {
+    @DisplayName("It should re-book canceled booking with success")
+    public void shouldReBookCanceledBookingSuccessfully() {
         //Given
         UUID id = UUID.randomUUID();
         Booking booking = BookingFixture.create();
 
         //When
-        when(findBookingByIdUseCase.execute(any(UUID.class))).thenReturn(Optional.of(booking));
+        when(reBookingCanceledBookingUseCase.execute(any(UUID.class))).thenReturn(booking);
 
         //Then
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/bookings/{id}", id)
+                        .post("/re-bookings/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(booking.getId().toString()))
+                .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.booker").exists())
                 .andExpect(jsonPath("$.checkinDate").exists())
                 .andExpect(jsonPath("$.checkoutDate").exists())
@@ -56,8 +57,8 @@ public class GetBookingByIdControllerTest {
                 .andExpect(jsonPath("$.roomBookings").isNotEmpty())
                 .andExpect(jsonPath("$.totalAmount").exists())
                 .andExpect(jsonPath("$.status").isNotEmpty())
-                .andExpect(jsonPath("$.createdAt").value(booking.getCreatedAt().toString()))
-                .andExpect(jsonPath("$.updatedAt").value(booking.getUpdatedAt().toString()))
+                .andExpect(jsonPath("$.createdAt").exists())
+                .andExpect(jsonPath("$.updatedAt").exists())
                 .andExpect(jsonPath("$.previousBooking").doesNotExist())
                 .andDo(print());
     }
@@ -69,15 +70,15 @@ public class GetBookingByIdControllerTest {
         UUID id = UUID.randomUUID();
 
         //When
-        when(findBookingByIdUseCase.execute(any(UUID.class))).thenReturn(Optional.empty());
+        doThrow(new NotFoundUseCaseException("You can not re-book a non existent canceled booking")).when(reBookingCanceledBookingUseCase).execute(any(UUID.class));
 
         //Then
         mvc.perform(
                 MockMvcRequestBuilders
-                        .get("/bookings/{id}", id)
+                        .post("/re-bookings/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("There is no booking with the given id"))
+                .andExpect(jsonPath("$.message").value("You can not re-book a non existent canceled booking"))
                 .andDo(print());
     }
 }
