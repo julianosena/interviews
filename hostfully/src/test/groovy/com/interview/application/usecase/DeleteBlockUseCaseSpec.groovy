@@ -1,9 +1,8 @@
 package com.interview.application.usecase
 
-
 import com.interview.application.domain.fixture.BlockFixture
 import com.interview.application.gateway.DeleteBlockGateway
-import com.interview.application.usecase.exception.UseCaseException
+import com.interview.application.usecase.exception.NotFoundUseCaseException
 import spock.lang.Specification
 
 class DeleteBlockUseCaseSpec extends Specification {
@@ -44,7 +43,7 @@ class DeleteBlockUseCaseSpec extends Specification {
         0 * deleteBlockGateway.execute(block)
 
         and: "it should throw an exception"
-        def e = thrown(UseCaseException)
+        def e = thrown(NotFoundUseCaseException)
 
         and : "message of the exception should be the expected"
         e.message == "You can not delete a non existent block"

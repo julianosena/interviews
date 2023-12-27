@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@DateRange(start = "start", end = "end", message = "Start date must be before")
+@DateRange(start = "start", end = "end", message = "Start date must be before end")
 public class CreateBlockApiRequest {
 
     @NotNull(message = "must be informed")

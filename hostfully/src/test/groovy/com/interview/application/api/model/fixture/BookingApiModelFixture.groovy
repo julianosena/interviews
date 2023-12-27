@@ -1,41 +1,38 @@
-package com.interview.application.domain.fixture
+package com.interview.application.api.model.fixture
 
-
-import com.interview.application.domain.Booker
-import com.interview.application.domain.Booking
+import com.interview.application.controller.api.model.BookerApiModel
+import com.interview.application.controller.api.model.BookingApiModel
 
 import java.time.Instant
 import java.time.LocalDate
 
-class BookingFixture {
+class BookingApiModelFixture {
 
-    static Booking create(def parameters = [:]) {
+    static BookingApiModel create(def parameters = [:]) {
         def defaultValues = [
                 id : UUID.randomUUID(),
-                booker : BookerFixture.create(),
-                checkinDate : LocalDate.now(),
+                booker : BookerApiModelFixture.create(),
+                checkinDate : LocalDate.now().plusDays(1),
                 checkoutDate : LocalDate.now().plusMonths(1),
                 numberOfAdults : 2,
                 numberOfChildren : 1,
-                roomBookings : [RoomBookingFixture.create()],
-                totalAmount : new BigDecimal(100),
-                status : Booking.Status.PENDING,
+                roomBookings : [RoomBookingApiModelFixture.create()],
+                status : BookingApiModel.Status.PENDING,
                 createdAt : Instant.now(),
                 updatedAt : Instant.now()
         ]
         def values = defaultValues + parameters
 
-        return Booking.builder()
+        return BookingApiModel.builder()
                 .id(values.id as UUID)
-                .previousBooking(values.previousBooking as Booking)
-                .booker(values.booker as Booker)
+                .previousBooking(values.previousBooking as BookingApiModel)
+                .booker(values.booker as BookerApiModel)
                 .checkinDate(values.checkinDate as LocalDate)
                 .checkoutDate(values.checkoutDate as LocalDate)
                 .numberOfAdults(values.numberOfAdults as Long)
                 .numberOfChildren(values.numberOfChildren as Long)
                 .roomBookings(values.roomBookings as List)
-                .status(values.status as Booking.Status)
-                .totalAmount(values.totalAmount as BigDecimal)
+                .status(values.status as BookingApiModel.Status)
                 .createdAt(values.createdAt as Instant)
                 .updatedAt(values.updatedAt as Instant)
                 .build()

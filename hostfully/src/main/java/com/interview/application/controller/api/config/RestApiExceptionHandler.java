@@ -3,6 +3,7 @@ package com.interview.application.controller.api.config;
 import com.interview.application.controller.api.exception.NotFoundRestApiResourceException;
 import com.interview.application.controller.api.model.response.ErrorResponse;
 import com.interview.application.domain.exception.BusinessException;
+import com.interview.application.usecase.exception.NotFoundUseCaseException;
 import com.interview.application.usecase.exception.UseCaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -70,6 +71,16 @@ public class RestApiExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleUseCaseException(final UseCaseException e) {
         log.error("Use case problem", e);
+
+        ErrorResponse response = new ErrorResponse();
+        response.setMessage(e.getMessage());
+        return response;
+    }
+
+    @ExceptionHandler({NotFoundUseCaseException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFoundUseCaseException(final NotFoundUseCaseException e) {
+        log.error("Not found Use case problem", e);
 
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());

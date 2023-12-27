@@ -7,6 +7,7 @@ import com.interview.application.domain.UpdatableRoomBookingProperties;
 import com.interview.application.domain.mapper.BookingMapper;
 import com.interview.application.domain.mapper.RoomBookingMapper;
 import com.interview.application.gateway.SaveBookingGateway;
+import com.interview.application.usecase.exception.NotFoundUseCaseException;
 import com.interview.application.usecase.exception.UseCaseException;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -27,7 +28,7 @@ public class UpdateBookingUseCase {
         Assert.notNull(id, "You must inform the id to update a booking properties");
 
         Booking booking = this.findBookingByIdUseCase.execute(id)
-                .orElseThrow(() -> new UseCaseException("You can not update a non existent booking"));
+                .orElseThrow(() -> new NotFoundUseCaseException("You can not update a non existent booking"));
 
         if(booking.isAllowedToUpdate()){
             Mappers.getMapper(BookingMapper.class).map(properties, booking);

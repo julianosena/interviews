@@ -1,6 +1,5 @@
 package com.interview.application.controller.api.model;
 
-import com.interview.application.domain.Address;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,7 @@ public class BookerApiModel {
     private String firstName;
     private String lastName;
     private String email;
-    private Address address;
+    private AddressApiModel address;
     private Instant createdAt;
     private Instant updatedAt;
 

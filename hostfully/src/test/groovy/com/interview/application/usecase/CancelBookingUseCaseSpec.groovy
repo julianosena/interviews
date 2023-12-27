@@ -5,7 +5,7 @@ import com.interview.application.domain.Hotel
 import com.interview.application.domain.exception.BusinessException
 import com.interview.application.domain.fixture.*
 import com.interview.application.gateway.SaveBookingGateway
-import com.interview.application.usecase.exception.UseCaseException
+import com.interview.application.usecase.exception.NotFoundUseCaseException
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -111,7 +111,7 @@ class CancelBookingUseCaseSpec extends Specification {
         0 * saveBookingGateway.execute(_ as Booking)
 
         then : "should throw an exception telling you can not cancel a non existent booking"
-        def e = thrown(UseCaseException)
+        def e = thrown(NotFoundUseCaseException)
 
         and : "message of the exception should be the expected"
         e.message == "You can not cancel a non existent booking"

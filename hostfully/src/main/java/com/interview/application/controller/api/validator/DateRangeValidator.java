@@ -53,6 +53,8 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Object
             if (startLocalDate != null && endLocalDate != null && startLocalDate.isBefore(endLocalDate)) {
                 return true;
             } else {
+                if(null == startLocalDate && null == endLocalDate) return true;
+
                 context.buildConstraintViolationWithTemplate(message)
                         .addPropertyNode(start)
                         .addConstraintViolation();

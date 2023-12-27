@@ -5,6 +5,7 @@ import com.interview.application.domain.Hotel
 import com.interview.application.domain.UpdatableBookingProperties
 import com.interview.application.domain.fixture.*
 import com.interview.application.gateway.SaveBookingGateway
+import com.interview.application.usecase.exception.NotFoundUseCaseException
 import com.interview.application.usecase.exception.UseCaseException
 import spock.lang.Specification
 
@@ -374,7 +375,7 @@ class UpdateBookingUseCaseSpec extends Specification {
         0 * saveBookingGateway.execute(_ as Booking)
 
         and : "throw an exception telling there is no booking with given id"
-        def e = thrown(UseCaseException)
+        def e = thrown(NotFoundUseCaseException)
         e.message == "You can not update a non existent booking"
     }
 

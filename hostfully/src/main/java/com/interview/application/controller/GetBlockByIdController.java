@@ -24,6 +24,6 @@ public class GetBlockByIdController {
     @ResponseStatus(HttpStatus.OK)
     public BlockApiModel execute(@PathVariable("id") UUID id){
         return useCase.execute(id).map(mapper::map)
-                .orElseThrow(() -> new NotFoundRestApiResourceException("There is no block for the given id"));
+                .orElseThrow(() -> new NotFoundRestApiResourceException("There is no block with the given id"));
     }
 }

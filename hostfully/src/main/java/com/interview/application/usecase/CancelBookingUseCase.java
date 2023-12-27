@@ -2,7 +2,7 @@ package com.interview.application.usecase;
 
 import com.interview.application.domain.Booking;
 import com.interview.application.gateway.SaveBookingGateway;
-import com.interview.application.usecase.exception.UseCaseException;
+import com.interview.application.usecase.exception.NotFoundUseCaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -20,7 +20,8 @@ public class CancelBookingUseCase {
         Assert.notNull(id, "You must inform the id to cancel the booking");
 
         Booking booking = this.findBookingByIdUseCase.execute(id)
-                .orElseThrow(() -> new UseCaseException("You can not cancel a non existent booking"));
+                .orElseThrow(() -> new NotFoundUseCaseException("You can not cancel a non existent booking"));
+
         booking.cancel();
 
         return saveBookingGateway.execute(booking);

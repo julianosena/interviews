@@ -5,18 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
-public class BlockApiModel {
+public class AddressApiModel {
 
     private UUID id;
-    private LocalDate start;
-    private LocalDate end;
+    private String street;
+    private String city;
+    private String state;
+    private String postalCode;
+    private String country;
     private Instant createdAt;
     private Instant updatedAt;
-
+    
 }
