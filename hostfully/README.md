@@ -1,6 +1,6 @@
 # BOOKING HOSTIFULLY
 
-### How was the system was develop.
+### How the system was develop.
 
 You are able to book more than one room for the same book.
 You can only book rooms that are available 'IS_AVAILABLE=TRUE.'
